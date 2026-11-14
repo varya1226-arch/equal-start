@@ -1,740 +1,1801 @@
-// ==========================================================================
+// =========================================================================
 // 1. АВТОМАТИЧЕСКАЯ ПОКРАСКА САЙТА В БОРДОВЫЙ СТИЛЬ (BURGUNDY THEME)
-// ==========================================================================
-(function injectBurgundyStyles() {
-  const styleId = 'ravny-burgundy-theme';
+// =========================================================================
+(function applyBurgundyTheme() {
+  const styleId = 'ravny-burgundy-theme-v4';
   if (!document.getElementById(styleId)) {
     const style = document.createElement('style');
     style.id = styleId;
     style.innerHTML = `
       :root {
         --primary: #800020 !important;
+        --primary-dark: #5c0017 !important;
         --primary-hover: #5c0017 !important;
         --primary-light: #fdf2f4 !important;
         --primary-border: #f3cbd3 !important;
         --accent: #d97706 !important;
+        --lav: #fdf2f4 !important;
+        --blue: #f8eff1 !important;
+        --line: #ebd7dc !important;
+        --bg: #faf7f8 !important;
       }
       body { background-color: #faf7f8 !important; }
-      .brand, .brand span, .stats-title, .stats-count, .hero h1, .modal-title {
+      .brand, .brand span, .stats-title, .stats-count, .hero h1, .modal-title, .section-head h2, .detail-card h1 {
         color: #800020 !important;
       }
-      .brand-icon {
-        background: linear-gradient(135deg, #800020, #a81c3c) !important;
+      .brand-mark, .brand-icon {
+        background: linear-gradient(135deg, #a81c3c, #800020) !important;
+        box-shadow: 0 7px 15px rgba(128,0,32,.25) !important;
       }
       .hero {
-        background: linear-gradient(180deg, #fff5f6 0%, #faf7f8 100%) !important;
+        background: radial-gradient(circle at 90% 5%, #ffe8ec 0, transparent 35%), linear-gradient(120deg, #fff5f6, #faf7f8 55%, #fdf2f4) !important;
         border-bottom: 1px solid #f5e6e8 !important;
       }
-      .hero-badge, .card-category, .modal-pill {
+      .eyebrow, .hero-badge, .tag, .card-category, .modal-pill, .match-score {
         background: #fdf2f4 !important;
         color: #800020 !important;
         border: 1px solid #f3cbd3 !important;
       }
-      .pill-btn.active, .btn-primary, .btn-card-solid {
+      .dot { background: #800020 !important; }
+      .gradient {
+        background: linear-gradient(90deg, #800020, #c02648) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        color: transparent !important;
+      }
+      .pill-btn.active, .btn-primary, .btn-card-solid, .saved-pill span {
         background: #800020 !important;
         border-color: #800020 !important;
         color: #ffffff !important;
       }
-      .pill-btn:hover {
+      .btn-primary:hover, .btn-card-solid:hover {
+        background: #5c0017 !important;
+      }
+      .pill-btn:hover, .navlinks button:hover, .navlinks button.active {
         background: #fdf2f4 !important;
         color: #800020 !important;
       }
-      .card {
+      .card, .op-card {
         border: 1px solid #ebd7dc !important;
       }
-      .card:hover {
+      .card:hover, .op-card:hover {
         border-color: #f3cbd3 !important;
-        box-shadow: 0 12px 20px -3px rgba(128, 0, 32, 0.12) !important;
+        box-shadow: 0 12px 25px rgba(128, 0, 32, 0.12) !important;
       }
-      .fav-count-badge {
-        background: #800020 !important;
+      .fav-count-badge, .stat strong {
+        color: #800020 !important;
+      }
+      .icon-btn.saved {
+        background: #fdf2f4 !important;
+        color: #800020 !important;
+        border-color: #f3cbd3 !important;
       }
       .btn-card-outline:hover {
         background: #fdf2f4 !important;
         color: #800020 !important;
         border-color: #f3cbd3 !important;
       }
+      .cta {
+        background: linear-gradient(120deg, #800020, #5c0017) !important;
+      }
+      .cta .btn {
+        background: #ffffff !important;
+        color: #800020 !important;
+      }
     `;
     document.head.appendChild(style);
   }
 })();
 
-// ==========================================================================
-// 2. БАЗА КАРТОЧЕК (Оригинал + Марафон ВШЭ + Вакансии + Школы + БВИ Олимпиады)
-// ==========================================================================
+// =========================================================================
+// 2. БАЗА ДАННЫХ: ВСЕ 72 ВОЗМОЖНОСТИ (44 ИСХОДНЫЕ + 28 НОВЫХ)
+// =========================================================================
 const opportunities = [
+  // --- 44 ИСХОДНЫЕ КАРТОЧКИ ---
   {
     id: 1,
     title: "Всероссийский конкурс «Большая перемена»",
-    category: "Олимпиады и конкурсы",
-    subjects: ["образование", "конкурсы", "карьера", "лидерство"],
+    category: "Олимпиады",
+    organizer: "Россия — страна возможностей / Росмолодёжь",
+    officialUrl: "https://bolshayaperemena.online",
+    region: ["Вся Россия"],
     format: "Онлайн + Финал очно",
-    region: "Все регионы",
+    ageLabel: "14–18 лет",
     ageMin: 14,
     ageMax: 18,
     audience: ["Школьники", "Студенты"],
-    deadline: "Весна 2026",
-    description: "Флагманский конкурс платформы «Россия — страна возможностей». Миллионные гранты на образование и развитие собственных проектов.",
-    officialUrl: "https://bolshayaperemena.online"
+    subjects: ["образование", "конкурсы", "карьера", "лидерство"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Ежегодно (весна)",
+    deadlineDate: "2026-05-15",
+    status: "Скоро старт",
+    eligibility: "Школьники 5–10 классов и студенты СПО",
+    description: "Флагманский конкурс платформы «Россия — страна возможностей». Миллионные призы на образование и развитие собственных проектов."
   },
   {
     id: 2,
     title: "Национальная технологическая олимпиада (НТО)",
-    category: "Олимпиады и конкурсы",
-    subjects: ["математика", "информатика", "робототехника", "ai"],
+    category: "Олимпиады",
+    organizer: "НИУ ВШЭ, Кружковое движение НТИ, ведущие вузы",
+    officialUrl: "https://ntolymp.ru",
+    region: ["Вся Россия"],
     format: "Онлайн + Офлайн",
-    region: "Все регионы",
+    ageLabel: "13–25 лет",
     ageMin: 13,
     ageMax: 25,
     audience: ["Школьники", "Студенты"],
+    subjects: ["математика", "информатика", "робототехника", "ai"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Ноябрь–Декабрь",
-    description: "Командная инженерная олимпиада. Победа дает 100 баллов ЕГЭ или поступление БВИ в ведущие технические вузы России.",
-    officialUrl: "https://ntolymp.ru"
+    deadlineDate: "2026-12-01",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 8–11 классов и студенты бакалавриата",
+    description: "Командная инженерная олимпиада. Победа дает 100 баллов ЕГЭ или поступление БВИ в ведущие технические вузы России."
   },
   {
     id: 3,
     title: "Гранты Росмолодёжи (1 и 2 сезоны)",
-    category: "Гранты",
-    subjects: ["социальные проекты", "волонтёрство", "предпринимательство"],
+    category: "Гранты и инициативные проекты",
+    organizer: "Федеральное агентство по делам молодёжи (Росмолодёжь)",
+    officialUrl: "https://fadm.gov.ru",
+    region: ["Вся Россия"],
     format: "Онлайн",
-    region: "Все регионы",
+    ageLabel: "14–35 лет",
     ageMin: 14,
     ageMax: 35,
     audience: ["Школьники", "Студенты", "Выпускники"],
-    deadline: "Регулярные волны",
-    description: "Финансовая поддержка молодежных инициатив до 1,5 млн рублей на реализацию социально значимых проектов.",
-    officialUrl: "https://fadm.gov.ru"
+    subjects: ["социальные проекты", "волонтёрство", "предпринимательство"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Регулярно",
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Граждане РФ от 14 до 35 лет",
+    description: "Финансовая поддержка молодежных инициатив до 1,5 млн рублей на реализацию социально значимых проектов."
   },
   {
     id: 4,
     title: "Платформа ДОБРО.РФ: волонтерские проекты",
-    category: "Карьера",
-    subjects: ["волонтёрство", "социальные проекты"],
+    category: "Волонтёрство",
+    organizer: "Ассоциация Добро.рф",
+    officialUrl: "https://dobro.ru",
+    region: ["Вся Россия"],
     format: "Онлайн и офлайн",
-    region: "Все регионы",
+    ageLabel: "14–35 лет",
     ageMin: 14,
     ageMax: 35,
     audience: ["Школьники", "Студенты", "Выпускники"],
-    deadline: "Круглогодично",
-    description: "Единая система учета добровольчества. Позволяет копить верифицированные часы для дополнительных баллов к ЕГЭ.",
-    officialUrl: "https://dobro.ru"
+    subjects: ["волонтёрство", "социальные проекты"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Круглый год",
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Все желающие от 14 лет",
+    description: "Единая система учета добровольчества. Позволяет копить верифицированные часы для дополнительных баллов к ЕГЭ."
   },
   {
     id: 5,
     title: "Всероссийский проект «Твой Ход»",
     category: "Кейс-чемпионаты",
-    subjects: ["стартапы", "лидерство", "проекты", "студенты"],
+    organizer: "Минобрнауки России, Росмолодёжь",
+    officialUrl: "https://tvoyhod.online",
+    region: ["Вся Россия"],
     format: "Онлайн + Офлайн",
-    region: "Все регионы",
+    ageLabel: "17–25 лет",
     ageMin: 17,
     ageMax: 25,
     audience: ["Студенты"],
+    subjects: ["стартапы", "лидерство", "проекты", "студенты"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Осень 2026",
-    description: "Главное сообщество студентов России. Конкурсные треки с главными премиями по 1 000 000 рублей.",
-    officialUrl: "https://tvoyhod.online"
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты вузов РФ",
+    description: "Главное сообщество студентов России. Конкурсные треки «Делаю» и «Первопроходец» с премиями по 1 000 000 рублей."
   },
   {
     id: 6,
     title: "Образовательный центр «Сириус»: научные смены",
-    category: "Образование",
-    subjects: ["математика", "физика", "химия", "биология", "it"],
+    category: "Онлайн-школы и подготовка",
+    organizer: "Фонд «Талант и успех»",
+    officialUrl: "https://sochisirius.ru",
+    region: ["Вся Россия"],
     format: "Офлайн (г. Сочи)",
-    region: "Все регионы",
+    ageLabel: "12–18 лет",
     ageMin: 12,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["математика", "физика", "химия", "биология", "it"],
+    participationCost: "Бесплатно (проживание и проезд оплачиваются)",
+    financialSupport: true,
     deadline: "Ежемесячно",
-    description: "Бесплатные профильные смены в Сочи для одаренных школьников под руководством ведущих ученых РАН.",
-    officialUrl: "https://sochisirius.ru"
+    deadlineDate: "2026-12-15",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Бесплатные профильные смены в Сочи для одаренных школьников под руководством ведущих ученых РАН."
   },
   {
     id: 7,
-    title: "Олимпиада «Я — профессионал»",
-    category: "Олимпиады и конкурсы",
-    subjects: ["экономика", "юриспруденция", "инженерия", "it"],
+    title: "Всероссийская олимпиада «Я — профессионал»",
+    category: "Олимпиады",
+    organizer: "Ассоциация организаторов олимпиад, ведущие вузы",
+    officialUrl: "https://yandex.ru/profi",
+    region: ["Вся Россия"],
     format: "Онлайн + Офлайн",
-    region: "Все регионы",
+    ageLabel: "18–28 лет",
     ageMin: 18,
     ageMax: 28,
     audience: ["Студенты"],
+    subjects: ["экономика", "юриспруденция", "инженерия", "it"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Ноябрь 2026",
-    description: "Масштабная олимпиада для студентов бакалавриата и магистратуры: льготы при поступлении и стажировки.",
-    officialUrl: "https://yandex.ru/profi"
+    deadlineDate: "2026-11-20",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты бакалавриата, специалитета и магистратуры",
+    description: "Масштабная олимпиада для студентов бакалавриата и магистратуры: льготы при поступлении и стажировки."
   },
   {
     id: 8,
     title: "Стажировка в Аналитике AI-агентов (Сбер)",
-    category: "Стажировки",
-    subjects: ["ai", "искусственный интеллект", "nlp", "it"],
+    category: "Стажировки и карьера",
+    organizer: "ПАО «Сбербанк»",
+    officialUrl: "https://sbergraduate.ru",
+    region: ["Москва"],
     format: "Гибрид / Москва",
-    region: "Москва",
+    ageLabel: "18–26 лет",
     ageMin: 18,
     ageMax: 26,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["ai", "искусственный интеллект", "nlp", "it"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Срочный отбор",
-    description: "Разработка логики автономных AI-агентов в экосистеме Сбера. Практика применения современных LLM-моделей.",
-    officialUrl: "https://sbergraduate.ru"
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты старших курсов технических специальностей",
+    description: "Разработка логики автономных AI-агентов в экосистеме Сбера. Практика применения современных LLM-моделей."
   },
   {
     id: 9,
     title: "Оплачиваемая стажировка BIG IN (X5 Group)",
-    category: "Стажировки",
-    subjects: ["ритейл", "логистика", "маркетинг", "финансы"],
+    category: "Стажировки и карьера",
+    organizer: "X5 Group",
+    officialUrl: "https://x5.ru",
+    region: ["Москва"],
     format: "Гибрид",
-    region: "Москва",
+    ageLabel: "19–26 лет",
     ageMin: 19,
     ageMax: 26,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["ритейл", "логистика", "маркетинг", "финансы"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Ноябрь 2026",
-    description: "Старт карьеры в ритейле: реальные проекты в сетях «Пятерочка», «Перекресток» и «Чижик».",
-    officialUrl: "https://x5.ru"
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты 3–4 курсов и выпускники",
+    description: "Старт карьеры в ритейле: реальные проекты в сетях «Пятерочка», «Перекресток» и «Чижик»."
   },
   {
     id: 10,
     title: "Стажерские программы ПСБ (4 направления)",
-    category: "Стажировки",
-    subjects: ["банкинг", "финансы", "it", "риск-менеджмент"],
+    category: "Стажировки и карьера",
+    organizer: "ПАО «Промсвязьбанк»",
+    officialUrl: "https://psbank.ru",
+    region: ["Москва"],
     format: "Офлайн / Гибрид",
-    region: "Москва",
+    ageLabel: "18–25 лет",
     ageMin: 18,
     ageMax: 25,
     audience: ["Студенты"],
+    subjects: ["банкинг", "финансы", "it", "риск-менеджмент"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Открытый набор",
-    description: "Оплачиваемая практика в Промсвязьбанке с графиком от 20 часов в неделю и наставничеством экспертов.",
-    officialUrl: "https://psbank.ru"
+    deadlineDate: "2026-12-15",
+    status: "Набор проводится регулярно",
+    eligibility: "Студенты экономических и IT направлений",
+    description: "Оплачиваемая практика в Промсвязьбанке с графиком от 20 часов в неделю и наставничеством экспертов."
   },
+  {
+    id: 11,
+    title: "Школа Анализа Данных (ШАД Яндекса)",
+    category: "Онлайн-школы и подготовка",
+    organizer: "Яндекс",
+    officialUrl: "https://yandex.ru/shad",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн",
+    ageLabel: "18–30 лет",
+    ageMin: 18,
+    ageMax: 30,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["data science", "машинное обучение", "алгоритмы"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Май (отбор)",
+    deadlineDate: "2026-05-10",
+    status: "Срок уточняется",
+    eligibility: "Студенты и выпускники с глубокой базой math/cs",
+    description: "Двухгодичная программа по Computer Science и машинному обучению топ-уровня."
+  },
+  {
+    id: 12,
+    title: "Стажировки Яндекс (Dev / ML / Analytics)",
+    category: "Стажировки и карьера",
+    organizer: "Яндекс",
+    officialUrl: "https://yandex.ru/yacamp",
+    region: ["Вся Россия"],
+    format: "Гибрид / Удаленно",
+    ageLabel: "18–27 лет",
+    ageMin: 18,
+    ageMax: 27,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["разработка", "python", "c++", "ml"],
+    participationCost: "Оплачивается",
+    financialSupport: true,
+    deadline: "Круглый год",
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Студенты и начинающие разработчики",
+    description: "Оплачиваемые стажировки от 3 до 6 месяцев с возможностью перехода в штат разработчиков Яндекса."
+  },
+  {
+    id: 13,
+    title: "Changellenge » Cup Russia: Кейс-чемпионат",
+    category: "Кейс-чемпионаты",
+    organizer: "Changellenge »",
+    officialUrl: "https://changellenge.com",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "17–25 лет",
+    ageMin: 17,
+    ageMax: 25,
+    audience: ["Студенты"],
+    subjects: ["консалтинг", "стратегия", "маркетинг", "финансы"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Весна/Осень",
+    deadlineDate: "2026-11-28",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты всех курсов",
+    description: "Крупнейший кейс-чемпионат России и СНГ для студентов всех специальностей."
+  },
+  {
+    id: 14,
+    title: "VK Cup: Соревнования для разработчиков",
+    category: "Олимпиады",
+    organizer: "VK",
+    officialUrl: "https://vk.com/cup",
+    region: ["Вся Россия"],
+    format: "Онлайн + Финал",
+    ageLabel: "14–25 лет",
+    ageMin: 14,
+    ageMax: 25,
+    audience: ["Школьники", "Студенты"],
+    subjects: ["алгоритмы", "mobile", "frontend", "cybersecurity"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Ежегодно",
+    deadlineDate: "2026-12-10",
+    status: "Скоро старт",
+    eligibility: "Школьники старших классов и студенты",
+    description: "Флагманский кубок VK по программированию с крупным призовым фондом."
+  },
+  {
+    id: 15,
+    title: "Тинькофф Поколение (Курсы по алгоритмам)",
+    category: "Онлайн-школы и подготовка",
+    organizer: "Т-Банк",
+    officialUrl: "https://tinkoff.ru/generation",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "13–18 лет",
+    ageMin: 13,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["алгоритмы", "олимпиадное программирование"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Сентябрь / Январь",
+    deadlineDate: "2026-01-15",
+    status: "Скоро старт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Бесплатные углубленные курсы по алгоритмам для школьников от олимпиадных тренеров Т-Банка."
+  },
+  {
+    id: 16,
+    title: "Стажировка в Т-Банке (Tinkoff Start)",
+    category: "Стажировки и карьера",
+    organizer: "Т-Банк",
+    officialUrl: "https://fintech.tinkoff.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "18–26 лет",
+    ageMin: 18,
+    ageMax: 26,
+    audience: ["Студенты"],
+    subjects: ["backend", "frontend", "qa", "аналитика"],
+    participationCost: "Оплачивается",
+    financialSupport: true,
+    deadline: "Весна/Лето/Осень",
+    deadlineDate: "2026-11-20",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты и выпускники вузов",
+    description: "Оплачиваемая удаленная стажировка с гибким графиком и наставничеством экспертов."
+  },
+  {
+    id: 17,
+    title: "Всероссийская олимпиада школьников (ВсОШ)",
+    category: "Олимпиады",
+    organizer: "Министерство просвещения РФ",
+    officialUrl: "https://vos.olimpiada.ru",
+    region: ["Вся Россия"],
+    format: "Офлайн",
+    ageLabel: "12–18 лет",
+    ageMin: 12,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["школьные предметы", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Сентябрь–Апрель",
+    deadlineDate: "2026-12-25",
+    status: "Приём заявок открыт",
+    eligibility: "Учащиеся 4–11 классов",
+    description: "Главная олимпиада страны: диплом заключительного этапа дает поступление БВИ в любой вуз РФ."
+  },
+  {
+    id: 18,
+    title: "Олимпиада «Высшая проба» (НИУ ВШЭ)",
+    category: "Олимпиады",
+    organizer: "НИУ ВШЭ",
+    officialUrl: "https://olymp.hse.ru/mmo",
+    region: ["Вся Россия"],
+    format: "Онлайн (отбор) + Офлайн",
+    ageLabel: "13–18 лет",
+    ageMin: 13,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["экономика", "обществознание", "математика", "it"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Ноябрь",
+    deadlineDate: "2026-11-22",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Перечневая олимпиада ВШЭ I уровня. Дипломы победителей дают 100 баллов или зачисление БВИ."
+  },
+  {
+    id: 19,
+    title: "Школа лекторов Фонда «Знание»",
+    category: "Стажировки и карьера",
+    organizer: "Российское общество «Знание»",
+    officialUrl: "https://znanierussia.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн",
+    ageLabel: "16–35 лет",
+    ageMin: 16,
+    ageMax: 35,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["публичные выступления", "наука", "педагогика"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Круглогодично",
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Молодые лекторы, ученые, студенты",
+    description: "Федеральный проект по подготовке спикеров и популяризаторов науки с поездками по регионам."
+  },
+  {
+    id: 20,
+    title: "Грантовый конкурс Фонда содействия инновациям «УМНИК»",
+    category: "Гранты и инициативные проекты",
+    organizer: "Фонд содействия инновациям",
+    officialUrl: "https://fasie.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "18–30 лет",
+    ageMin: 18,
+    ageMax: 30,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["стартапы", "инновации", "наука"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Ежегодно (осень)",
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты, аспиранты и молодые ученые",
+    description: "Грант 500 000 рублей на проведение научно-исследовательских работ и коммерциализацию идеи."
+  },
+  {
+    id: 21,
+    title: "Стажировка в Правительстве Москвы",
+    category: "Стажировки и карьера",
+    organizer: "Правительство Москвы",
+    officialUrl: "https://talent.mos.ru",
+    region: ["Москва"],
+    format: "Офлайн",
+    ageLabel: "18–27 лет",
+    ageMin: 18,
+    ageMax: 27,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["госуправление", "урбанистика", "юриспруденция", "медиа"],
+    participationCost: "Оплачивается Правительством Москвы",
+    financialSupport: true,
+    deadline: "Весна/Осень",
+    deadlineDate: "2026-11-20",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты выпускных курсов и выпускники",
+    description: "Оплачиваемая программа стажировки в департаментах Правительства Москвы на 6 месяцев."
+  },
+  {
+    id: 22,
+    title: "Лидеры России: трек «Студенты»",
+    category: "Стажировки и карьера",
+    organizer: "АНО «Россия — страна возможностей»",
+    officialUrl: "https://лидерыроссии.рф",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн",
+    ageLabel: "18–35 лет",
+    ageMin: 18,
+    ageMax: 35,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["лидерство", "менеджмент", "госуправление"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "По сезонам",
+    deadlineDate: "2026-12-10",
+    status: "Срок уточняется",
+    eligibility: "Граждане РФ с управленческим потенциалом",
+    description: "Конкурс управленцев нового поколения: наставничество топ-руководителей и гранты на образование."
+  },
+  {
+    id: 23,
+    title: "Олимпиада «Покори Воробьёвы горы!» (МГУ)",
+    category: "Олимпиады",
+    organizer: "МГУ им. М.В. Ломоносова и ИД «МК»",
+    officialUrl: "https://pvg.mk.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн",
+    ageLabel: "12–18 лет",
+    ageMin: 12,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["математика", "физика", "литература", "история"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Декабрь–Январь",
+    deadlineDate: "2026-12-28",
+    status: "Скоро старт",
+    eligibility: "Школьники 5–11 классов",
+    description: "Совместная перечневая олимпиада МГУ и газеты МК для школьников из всех уголков России."
+  },
+  {
+    id: 24,
+    title: "Школа предпринимателя от Сбера (SberZ / SberStudent)",
+    category: "Кейс-чемпионаты",
+    organizer: "ПАО «Сбербанк»",
+    officialUrl: "https://sberstudent.sber.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "14–25 лет",
+    ageMin: 14,
+    ageMax: 25,
+    audience: ["Школьники", "Студенты"],
+    subjects: ["стартапы", "бизнес", "инвестиции"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Осень–Зима",
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 8–11 классов и студенты",
+    description: "Бесплатный акселератор стартапов: создание MVP и защита перед инвесторами на Демо-дне."
+  },
+  {
+    id: 25,
+    title: "Летняя школа CTF (Кибербезопасность)",
+    category: "Онлайн-школы и подготовка",
+    organizer: "АРСИБ",
+    officialUrl: "https://ctfnews.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн / Выездная",
+    ageLabel: "14–22 лет",
+    ageMin: 14,
+    ageMax: 22,
+    audience: ["Школьники", "Студенты"],
+    subjects: ["кибербезопасность", "hacking", "reverse", "crypto"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Июнь",
+    deadlineDate: "2026-06-01",
+    status: "Срок уточняется",
+    eligibility: "Школьники и студенты",
+    description: "Интенсив по информационной безопасности и решение соревнований формата Capture the Flag."
+  },
+  {
+    id: 26,
+    title: "Грант «Студенческий стартап» (1 000 000 ₽)",
+    category: "Гранты и инициативные проекты",
+    organizer: "Фонд содействия инновациям / Минобрнауки",
+    officialUrl: "https://fasie.ru/studstartup",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "18–30 лет",
+    ageMin: 18,
+    ageMax: 30,
+    audience: ["Студенты"],
+    subjects: ["стартапы", "технологии", "бизнес"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Весна 2026",
+    deadlineDate: "2026-04-15",
+    status: "Скоро старт",
+    eligibility: "Студенты вузов РФ",
+    description: "Грант 1 миллион рублей студентам вузов на открытие собственного технологического юрлица."
+  },
+  {
+    id: 27,
+    title: "Академия Яндекса: базовые курсы разработки",
+    category: "Онлайн-школы и подготовка",
+    organizer: "Яндекс",
+    officialUrl: "https://academy.yandex.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "14–25 лет",
+    ageMin: 14,
+    ageMax: 25,
+    audience: ["Школьники", "Студенты"],
+    subjects: ["python", "c++", "django", "frontend"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Круглый год",
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Все желающие",
+    description: "Бесплатные онлайн-учебники и интерактивные тренажеры по Python, C++ и математике."
+  },
+  {
+    id: 28,
+    title: "Стажировка в OZON Camp",
+    category: "Стажировки и карьера",
+    organizer: "OZON",
+    officialUrl: "https://job.ozon.ru/camp",
+    region: ["Москва"],
+    format: "Гибрид",
+    ageLabel: "18–26 лет",
+    ageMin: 18,
+    ageMax: 26,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["e-commerce", "it", "маркетинг", "логистика"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
+    deadline: "Весна/Осень",
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты старших курсов и выпускники",
+    description: "Оплачиваемая полугодовая стажировка в e-commerce гиганте с первых дней работы над реальными фичами."
+  },
+  {
+    id: 29,
+    title: "Кейс-чемпионат «Кубок МТС»",
+    category: "Кейс-чемпионаты",
+    organizer: "ПАО «МТС»",
+    officialUrl: "https://mts.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "18–25 лет",
+    ageMin: 18,
+    ageMax: 25,
+    audience: ["Студенты"],
+    subjects: ["телеком", "it", "маркетинг", "fintech"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Осень 2026",
+    deadlineDate: "2026-11-27",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты вузов РФ",
+    description: "Соревнование по решению стратегических кейсов цифровой экосистемы МТС с фаст-треком на работу."
+  },
+  {
+    id: 30,
+    title: "Школа программирования 21 (Сбер)",
+    category: "Онлайн-школы и подготовка",
+    organizer: "АНО «Школа 21» / Сбер",
+    officialUrl: "https://21-school.ru",
+    region: ["Вся Россия"],
+    format: "Офлайн (кампусы в РФ)",
+    ageLabel: "18–40 лет",
+    ageMin: 18,
+    ageMax: 40,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["c", "c++", "unix", "devops", "peer-to-peer"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Круглый год",
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Все желающие от 18 лет",
+    description: "Бесплатная школа программирования по методике «равный равному» без учителей и оценок."
+  },
+  {
+    id: 31,
+    title: "Олимпиада Innopolis Open (Иннополис)",
+    category: "Олимпиады",
+    organizer: "Университет Иннополис",
+    officialUrl: "https://olymp.innopolis.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн",
+    ageLabel: "13–18 лет",
+    ageMin: 13,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["информатика", "робототехника", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Декабрь–Январь",
+    deadlineDate: "2026-12-20",
+    status: "Скоро старт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Международная олимпиада Университета Иннополис для талантливых юных программистов."
+  },
+  {
+    id: 32,
+    title: "VK Тестирование (Курсы по QA)",
+    category: "Онлайн-школы и подготовка",
+    organizer: "VK Образование",
+    officialUrl: "https://vk.company/ru/edu",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "16–26 лет",
+    ageMin: 16,
+    ageMax: 26,
+    audience: ["Студенты", "Школьники"],
+    subjects: ["qa", "тестирование", "автоматизация"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "По набору",
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники и студенты",
+    description: "Обучение основам ручного и автоматизированного тестирования сервисов VK."
+  },
+  {
+    id: 33,
+    title: "Стажировка в Росатоме",
+    category: "Стажировки и карьера",
+    organizer: "Госкорпорация «Росатом»",
+    officialUrl: "https://rosatom-career.ru",
+    region: ["Вся Россия"],
+    format: "Офлайн",
+    ageLabel: "18–27 лет",
+    ageMin: 18,
+    ageMax: 27,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["ядерная физика", "инженерия", "it", "химия"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
+    deadline: "Круглый год",
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Студенты старших курсов технических вузов",
+    description: "Практика и трудоустройство на ключевых предприятиях атомной отрасли РФ."
+  },
+  {
+    id: 34,
+    title: "Хакатон Цифровой Прорыв (Созидатели)",
+    category: "Кейс-чемпионаты",
+    organizer: "АНО «Россия — страна возможностей»",
+    officialUrl: "https://hacks-ai.ru",
+    region: ["Вся Россия"],
+    format: "Гибрид",
+    ageLabel: "14–35 лет",
+    ageMin: 14,
+    ageMax: 35,
+    audience: ["Школьники", "Студенты", "Выпускники"],
+    subjects: ["хакатон", "ai", "web", "mobile"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "По сезонам",
+    deadlineDate: "2026-11-29",
+    status: "Приём заявок открыт",
+    eligibility: "Граждане РФ от 14 лет",
+    description: "Главный хакатон страны: разработка IT-решений по реальным кейсам с призовым фондом в десятки миллионов."
+  },
+  {
+    id: 35,
+    title: "Программа стипендий «Альфа-Шанс»",
+    category: "Гранты и инициативные проекты",
+    organizer: "АО «Альфа-Банк»",
+    officialUrl: "https://alfabank.ru/alfa-chance",
+    region: ["Вся Россия"],
+    format: "Онлайн отбор",
+    ageLabel: "18–23 лет",
+    ageMin: 18,
+    ageMax: 23,
+    audience: ["Студенты"],
+    subjects: ["стипендия", "поддержка студентов"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Ноябрь–Декабрь",
+    deadlineDate: "2026-12-05",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты 3–4 курсов российских вузов",
+    description: "Именная стипендия 300 000 рублей от Альфа-Банка для лучших студентов 3–4 курсов."
+  },
+  {
+    id: 36,
+    title: "Стажировки в Контуре (СКБ Контур)",
+    category: "Стажировки и карьера",
+    organizer: "СКБ Контур",
+    officialUrl: "https://kontur.ru/career",
+    region: ["Вся Россия"],
+    format: "Гибрид / Удаленно",
+    ageLabel: "18–25 лет",
+    ageMin: 18,
+    ageMax: 25,
+    audience: ["Студенты"],
+    subjects: ["c#", "frontend", "qa", "аналитика"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
+    deadline: "Весна/Лето",
+    deadlineDate: "2026-04-30",
+    status: "Срок уточняется",
+    eligibility: "Студенты профильных факультетов",
+    description: "Оплачиваемая стажировка в одной из крупнейших экосистем для бизнеса в России."
+  },
+  {
+    id: 37,
+    title: "Олимпиада «Технокубок» (МГТУ им. Баумана и VK)",
+    category: "Олимпиады",
+    organizer: "МГТУ им. Н.Э. Баумана, МФТИ и VK",
+    officialUrl: "https://technocup.mail.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн",
+    ageLabel: "14–18 лет",
+    ageMin: 14,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["информатика", "алгоритмы", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Осень–Зима",
+    deadlineDate: "2026-12-12",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 8–11 классов",
+    description: "Олимпиада по спортивному программированию I уровня для поступления без экзаменов."
+  },
+  {
+    id: 38,
+    title: "Акселератор «Архипелаг» (НТИ)",
+    category: "Кейс-чемпионаты",
+    organizer: "Платформа НТИ",
+    officialUrl: "https://archipelago2026.ru",
+    region: ["Вся Россия"],
+    format: "Офлайн интенсив",
+    ageLabel: "16–35 лет",
+    ageMin: 16,
+    ageMax: 35,
+    audience: ["Студенты", "Выпускники"],
+    subjects: ["бпла", "биотех", "космос", "инженерия"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Лето",
+    deadlineDate: "2026-06-15",
+    status: "Срок уточняется",
+    eligibility: "Команды стартапов и инженеры",
+    description: "Главное инженерное мероприятие по разработке дронов, космоса и биотех-стартапов."
+  },
+  {
+    id: 39,
+    title: "Стажерская программа ВТБ Юниор",
+    category: "Стажировки и карьера",
+    organizer: "Банк ВТБ",
+    officialUrl: "https://vtbcareer.com",
+    region: ["Москва"],
+    format: "Гибрид",
+    ageLabel: "19–26 лет",
+    ageMin: 19,
+    ageMax: 26,
+    audience: ["Студенты старших курсов", "Выпускники"],
+    subjects: ["банкинг", "инвестиции", "it", "риски"],
+    participationCost: "Оплачивается банком",
+    financialSupport: true,
+    deadline: "Осень/Весна",
+    deadlineDate: "2026-11-24",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты старших курсов и выпускники",
+    description: "Годовая программа развития выпускников в головном офисе банка ВТБ."
+  },
+  {
+    id: 40,
+    title: "Олимпиада «Турнир Городов» по математике",
+    category: "Олимпиады",
+    organizer: "Оргкомитет Турнира Городов",
+    officialUrl: "https://turgor.ru",
+    region: ["Вся Россия"],
+    format: "Офлайн в городах",
+    ageLabel: "13–18 лет",
+    ageMin: 13,
+    ageMax: 18,
+    audience: ["Школьники"],
+    subjects: ["математика", "олимпиадные задачи"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Осень/Весна",
+    deadlineDate: "2026-11-20",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 8–11 классов",
+    description: "Международная сложная олимпиада по математике с глубокими нестандартными задачами."
+  },
+  {
+    id: 41,
+    title: "Стажер-разработчик в Лаборатории Касперского (Safeboard)",
+    category: "Стажировки и карьера",
+    organizer: "Kaspersky",
+    officialUrl: "https://safeboard.kaspersky.ru",
+    region: ["Москва"],
+    format: "Гибрид",
+    ageLabel: "18–26 лет",
+    ageMin: 18,
+    ageMax: 26,
+    audience: ["Студенты"],
+    subjects: ["c++", "python", "cybersecurity"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
+    deadline: "Октябрь–Ноябрь",
+    deadlineDate: "2026-11-18",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты профильных IT специальностей",
+    description: "Стажировка в области кибербезопасности и разработки антивирусных систем."
+  },
+  {
+    id: 42,
+    title: "Кейс-чемпионат CUP TECHNICAL (Инженерный кубок)",
+    category: "Кейс-чемпионаты",
+    organizer: "Changellenge »",
+    officialUrl: "https://changellenge.com/cup-technical",
+    region: ["Вся Россия"],
+    format: "Онлайн",
+    ageLabel: "18–25 лет",
+    ageMin: 18,
+    ageMax: 25,
+    audience: ["Студенты"],
+    subjects: ["инженерия", "нефтехимия", "производство"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Осень",
+    deadlineDate: "2026-11-26",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты инженерно-технических специальностей",
+    description: "Решение производственных кейсов металлургических и нефтехимических заводов."
+  },
+  {
+    id: 43,
+    title: "Стипендия Правительства РФ / Президента РФ",
+    category: "Гранты и инициативные проекты",
+    organizer: "Минобрнауки России",
+    officialUrl: "https://минобрнауки.рф",
+    region: ["Вся Россия"],
+    format: "Документальный отбор",
+    ageLabel: "18–30 лет",
+    ageMin: 18,
+    ageMax: 30,
+    audience: ["Студенты"],
+    subjects: ["наука", "публикации", "учеба"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
+    deadline: "Ежегодно (весна)",
+    deadlineDate: "2026-04-10",
+    status: "Срок уточняется",
+    eligibility: "Студенты очной формы бюджетных отделений",
+    description: "Государственная стипендия за выдающиеся успехи в учебе и научные статьи в Scopus/ВАК."
+  },
+  {
+    id: 44,
+    title: "Олимпиада Юношеской математической школы (ЮМШ)",
+    category: "Олимпиады",
+    organizer: "СПбГУ",
+    officialUrl: "https://yumsh.ru",
+    region: ["Вся Россия"],
+    format: "Онлайн + Офлайн СПб",
+    ageLabel: "11–17 лет",
+    ageMin: 11,
+    ageMax: 17,
+    audience: ["Школьники"],
+    subjects: ["математика", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
+    deadline: "Осень",
+    deadlineDate: "2026-11-20",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 5–11 классов",
+    description: "Традиционная исследовательская олимпиада СПбГУ для одаренных математиков."
+  },
+
+  // --- 28 НОВЫХ КАРТОЧЕК ---
   {
     id: 101,
     title: "Осенний карьерный марафон ЦРК ВШЭ (39 компаний)",
-    category: "Карьера",
-    subjects: ["карьера", "стажировки", "вшэ", "нетворкинг"],
+    category: "Стажировки и карьера",
+    organizer: "Центр развития карьеры НИУ ВШЭ",
+    officialUrl: "https://career.hse.ru",
+    region: ["Москва"],
     format: "Офлайн (Покровка, Атриум)",
-    region: "Москва",
+    ageLabel: "17–26 лет",
     ageMin: 17,
     ageMax: 26,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["карьера", "стажировки", "вшэ", "нетворкинг"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "18 ноября (12:00–17:00)",
-    description: "Стенд-сессии 39 компаний (ТеДо, ДОМ.РФ, А7), экспресс-собеседования, мастер-классы. Открыто для всех вузов.",
-    officialUrl: "https://career.hse.ru"
+    deadlineDate: "2026-11-18",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты и выпускники любых вузов",
+    description: "Стенд-сессии 39 компаний (ТеДо, ДОМ.РФ, А7), экспресс-собеседования, мастер-классы. Открыто для всех вузов."
   },
   {
     id: 102,
     title: "HR-День от ДРТ на Покровке",
-    category: "Карьера",
-    subjects: ["консалтинг", "резюме", "дрт"],
+    category: "Стажировки и карьера",
+    organizer: "Группа ДРТ (Деловые Решения и Технологии)",
+    officialUrl: "https://delret.ru",
+    region: ["Москва"],
     format: "Офлайн (Покровка)",
-    region: "Москва",
+    ageLabel: "18–25 лет",
     ageMin: 18,
     ageMax: 25,
     audience: ["Студенты"],
+    subjects: ["консалтинг", "резюме", "дрт"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "10 ноября",
-    description: "Прожарка резюме и консультации по отбору в стратегический консалтинг ДРТ (экс-Deloitte).",
-    officialUrl: "https://delret.ru"
+    deadlineDate: "2026-11-10",
+    status: "Приём заявок завершён",
+    eligibility: "Студенты бакалавриата и магистратуры",
+    description: "Прожарка резюме и консультации по отбору в стратегический консалтинг ДРТ (экс-Deloitte)."
   },
   {
     id: 103,
     title: "Воркшоп «Оставь свой след» (ДРТ х Касперский)",
-    category: "Карьера",
-    subjects: ["it", "кибербезопасность", "консалтинг"],
-    format: "Офлайн (Москва)",
-    region: "Москва",
+    category: "Стажировки и карьера",
+    organizer: "ДРТ & Лаборатория Касперского",
+    officialUrl: "https://delret.ru",
+    region: ["Москва"],
+    format: "Офлайн",
+    ageLabel: "18–26 лет",
     ageMin: 18,
     ageMax: 26,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["it", "кибербезопасность", "консалтинг"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "12 ноября",
-    description: "Практический воркшоп экспертов консалтинга и кибербезопасности для студентов IT-направлений.",
-    officialUrl: "https://delret.ru"
+    deadlineDate: "2026-11-12",
+    status: "Приём заявок завершён",
+    eligibility: "Студенты технических специальностей",
+    description: "Практический воркшоп экспертов консалтинга и кибербезопасности для студентов IT-направлений."
   },
   {
     id: 104,
     title: "Форум «Город.Карьера.Бизнес.2026» (Ломоносов)",
-    category: "Карьера",
-    subjects: ["карьера", "бизнес", "стартапы"],
+    category: "Стажировки и карьера",
+    organizer: "Правительство Москвы",
+    officialUrl: "https://moscow.ru",
+    region: ["Москва"],
     format: "Офлайн",
-    region: "Москва",
+    ageLabel: "16–30 лет",
     ageMin: 16,
     ageMax: 30,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["карьера", "бизнес", "стартапы"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "14 ноября",
-    description: "Масштабный молодежный форум развития карьеры в инновационном кластере «Ломоносов».",
-    officialUrl: "https://moscow.ru"
+    deadlineDate: "2026-11-14",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники, студенты и молодые специалисты",
+    description: "Масштабный молодежный форум развития карьеры в инновационном кластере «Ломоносов»."
   },
   {
     id: 105,
     title: "Бесплатный AI Кампус от МТС Банка",
-    category: "Образование",
-    subjects: ["ai", "fintech", "it"],
+    category: "Онлайн-школы и подготовка",
+    organizer: "МТС Банк",
+    officialUrl: "https://mtsbank.ru",
+    region: ["Вся Россия"],
     format: "Онлайн / Смешанный",
-    region: "Все регионы",
+    ageLabel: "18–28 лет",
     ageMin: 18,
     ageMax: 28,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["ai", "fintech", "it"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "15 ноября",
-    description: "Образовательный онлайн-кампус для разработчиков по внедрению искусственного интеллекта в банкинг.",
-    officialUrl: "https://mtsbank.ru"
+    deadlineDate: "2026-11-15",
+    status: "Приём заявок открыт",
+    eligibility: "Начинающие разработчики и аналитики данных",
+    description: "Образовательный онлайн-кампус для разработчиков по внедрению искусственного интеллекта в банкинг."
   },
   {
     id: 106,
     title: "Онлайн-интенсив «Карьерный компас» (ДОМ.РФ)",
-    category: "Карьера",
-    subjects: ["финансы", "аналитика"],
+    category: "Стажировки и карьера",
+    organizer: "АО «ДОМ.РФ»",
+    officialUrl: "https://xn--d1aqf.xn--p1ai",
+    region: ["Вся Россия"],
     format: "Онлайн",
-    region: "Все регионы",
+    ageLabel: "17–25 лет",
     ageMin: 17,
     ageMax: 25,
     audience: ["Студенты"],
+    subjects: ["финансы", "аналитика", "строительство"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "17–19 ноября",
-    description: "Трехдневный карьерный онлайн-интенсив: ключевые направления финансовой сферы ДОМ.РФ.",
-    officialUrl: "https://xn--d1aqf.xn--p1ai"
+    deadlineDate: "2026-11-19",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты экономических и инженерных вузов",
+    description: "Трехдневный карьерный онлайн-интенсив: ключевые направления финансовой сферы ДОМ.РФ."
   },
   {
     id: 107,
     title: "Вебинар МИЭФ: «AI в финансах»",
-    category: "Образование",
-    subjects: ["финансы", "ai", "миэф"],
+    category: "Онлайн-школы и подготовка",
+    organizer: "МИЭФ НИУ ВШЭ",
+    officialUrl: "https://mief.hse.ru",
+    region: ["Вся Россия"],
     format: "Онлайн",
-    region: "Все регионы",
+    ageLabel: "17–30 лет",
     ageMin: 17,
     ageMax: 30,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["финансы", "ai", "миэф"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "20 ноября",
-    description: "Вебинар магистратуры МИЭФ ВШЭ: заменит ли искусственный интеллект финансовых аналитиков.",
-    officialUrl: "https://mief.hse.ru"
+    deadlineDate: "2026-11-20",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты старших курсов, выпускники бакалавриата",
+    description: "Вебинар магистратуры МИЭФ ВШЭ: заменит ли искусственный интеллект финансовых аналитиков."
   },
   {
     id: 108,
     title: "Школа Т2 x ВШЭ: «Big Data & Продуктовый подход»",
     category: "Кейс-чемпионаты",
-    subjects: ["big data", "телеком", "it"],
+    organizer: "Мобильный оператор Т2 и НИУ ВШЭ",
+    officialUrl: "https://career.hse.ru",
+    region: ["Москва"],
     format: "Смешанный",
-    region: "Москва",
+    ageLabel: "18–26 лет",
     ageMin: 18,
     ageMax: 26,
     audience: ["Студенты"],
+    subjects: ["big data", "телеком", "it"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "23–26 ноября",
-    description: "Практический командный кейс на реальных датасетах мобильного оператора Т2 под монетизацию данных.",
-    officialUrl: "https://career.hse.ru"
+    deadlineDate: "2026-11-26",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты ВШЭ и партнерских вузов",
+    description: "Практический командный кейс на реальных датасетах мобильного оператора Т2 под монетизацию данных."
   },
   {
     id: 109,
     title: "VK Education в Вышке: «Теория игр в карьере»",
-    category: "Карьера",
-    subjects: ["теория игр", "it", "vk"],
+    category: "Стажировки и карьера",
+    organizer: "VK Образование",
+    officialUrl: "https://education.vk.company",
+    region: ["Москва"],
     format: "Офлайн (Покровка)",
-    region: "Москва",
+    ageLabel: "17–25 лет",
     ageMin: 17,
     ageMax: 25,
     audience: ["Студенты"],
+    subjects: ["теория игр", "it", "vk"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "24–25 ноября",
-    description: "Интерактивная лекция лидеров разработки VK: как алгоритмы теории игр помогают строить карьеру.",
-    officialUrl: "https://education.vk.company"
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты математических и IT специальностей",
+    description: "Интерактивная лекция лидеров разработки VK: как алгоритмы теории игр помогают строить карьеру."
   },
   {
     id: 110,
     title: "Школа Авито x ВШЭ: «Запуск продукта: от идеи до питча»",
     category: "Кейс-чемпионаты",
-    subjects: ["продакт", "авито", "стартапы"],
+    organizer: "Авито и НИУ ВШЭ",
+    officialUrl: "https://career.hse.ru",
+    region: ["Москва"],
     format: "Смешанный",
-    region: "Москва",
+    ageLabel: "18–26 лет",
     ageMin: 18,
     ageMax: 26,
     audience: ["Студенты"],
+    subjects: ["продакт", "авито", "стартапы"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "25–30 ноября",
-    description: "Разработка продуктового решения и защита перед ведущими продакт-менеджерами Авито.",
-    officialUrl: "https://career.hse.ru"
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты и выпускники вузов",
+    description: "Разработка продуктового решения и защита перед ведущими продакт-менеджерами Авито."
   },
   {
     id: 111,
     title: "Консультант в стратегический консалтинг (ТеДо)",
-    category: "Стажировки",
-    subjects: ["стратегия", "консалтинг", "тедо"],
+    category: "Стажировки и карьера",
+    organizer: "«Технологии Доверия» (экс-PwC)",
+    officialUrl: "https://tedo.ru",
+    region: ["Москва"],
     format: "Гибрид",
-    region: "Москва",
+    ageLabel: "19–26 лет",
     ageMin: 19,
     ageMax: 26,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["стратегия", "консалтинг", "тедо"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Открытый отбор",
-    description: "Отбор в практику бизнес-консультирования компании «Технологии Доверия» (экс-PwC).",
-    officialUrl: "https://tedo.ru"
+    deadlineDate: "2026-12-15",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты старших курсов и выпускники экономических вузов",
+    description: "Отбор в практику бизнес-консультирования компании «Технологии Доверия» (экс-PwC)."
   },
   {
     id: 112,
     title: "Консультант в нефтегазовый консалтинг ТеДо",
-    category: "Стажировки",
-    subjects: ["энергетика", "нефтегаз", "консалтинг"],
+    category: "Стажировки и карьера",
+    organizer: "«Технологии Доверия» (экс-PwC)",
+    officialUrl: "https://tedo.ru",
+    region: ["Москва"],
     format: "Гибрид",
-    region: "Москва",
+    ageLabel: "20–27 лет",
     ageMin: 20,
     ageMax: 27,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["энергетика", "нефтегаз", "консалтинг"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Ноябрь 2026",
-    description: "Консультирование корпораций ТЭК по оптимизации цепочек поставок и операционной модели.",
-    officialUrl: "https://tedo.ru"
+    deadlineDate: "2026-11-30",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты магистратуры и выпускники ТЭК/экономики",
+    description: "Консультирование корпораций ТЭК по оптимизации цепочек поставок и операционной модели."
   },
   {
     id: 113,
     title: "Стажёрская программа ДОМ.РФ (4 трека)",
-    category: "Стажировки",
-    subjects: ["финансы", "it", "юриспруденция"],
+    category: "Стажировки и карьера",
+    organizer: "АО «ДОМ.РФ»",
+    officialUrl: "https://xn--d1aqf.xn--p1ai/career",
+    region: ["Москва"],
     format: "Гибрид",
-    region: "Москва",
+    ageLabel: "18–25 лет",
     ageMin: 18,
     ageMax: 25,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["финансы", "it", "юриспруденция"],
+    participationCost: "Оплачивается ДОМ.РФ",
+    financialSupport: true,
     deadline: "Идет прием",
-    description: "Оплачиваемая полугодовая стажировка в финансовом институте развития с возможностью оффера.",
-    officialUrl: "https://xn--d1aqf.xn--p1ai/career"
+    deadlineDate: "2026-12-20",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты 3–4 курсов бакалавриата и магистратуры",
+    description: "Оплачиваемая полугодовая стажировка в финансовом институте развития с возможностью оффера."
   },
   {
     id: 114,
     title: "Стажёрская программа «Прыжок тигра» (А7)",
-    category: "Стажировки",
-    subjects: ["маркетинг", "бизнес"],
+    category: "Стажировки и карьера",
+    organizer: "Холдинг А7",
+    officialUrl: "https://a7.ru",
+    region: ["Москва"],
     format: "Офлайн",
-    region: "Москва",
+    ageLabel: "18–25 лет",
     ageMin: 18,
     ageMax: 25,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["маркетинг", "бизнес"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Ноябрь 2026",
-    description: "Практическая программа развития талантов с менторством топ-менеджеров холдинга А7.",
-    officialUrl: "https://a7.ru"
+    deadlineDate: "2026-11-28",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты и выпускники",
+    description: "Практическая программа развития талантов с менторством топ-менеджеров холдинга А7."
   },
   {
     id: 115,
     title: "Стажер в отдел ТВ-закупок (КИТ1217)",
-    category: "Стажировки",
-    subjects: ["медиа", "реклама", "тв"],
+    category: "Стажировки и карьера",
+    organizer: "КИТ1217 Медиа",
+    officialUrl: "https://kit1217.ru",
+    region: ["Москва"],
     format: "Офлайн",
-    region: "Москва",
+    ageLabel: "18–24 лет",
     ageMin: 18,
     ageMax: 24,
     audience: ["Студенты"],
+    subjects: ["медиа", "реклама", "тв"],
+    participationCost: "Оплачивается",
+    financialSupport: true,
     deadline: "Срочный набор",
-    description: "Медиапланирование, аналитика рейтингов и закупки рекламы на федеральных телеканалах.",
-    officialUrl: "https://kit1217.ru"
+    deadlineDate: "2026-11-21",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты факультетов рекламы и медиа",
+    description: "Медиапланирование, аналитика рейтингов и закупки рекламы на федеральных телеканалах."
   },
   {
     id: 116,
     title: "Стажерская программа Минпромторга России",
-    category: "Стажировки",
-    subjects: ["госслужба", "промышленность"],
+    category: "Стажировки и карьера",
+    organizer: "Минпромторг России",
+    officialUrl: "https://minpromtorg.gov.ru",
+    region: ["Москва"],
     format: "Офлайн (Москва-Сити)",
-    region: "Москва",
+    ageLabel: "18–27 лет",
     ageMin: 18,
     ageMax: 27,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["госслужба", "промышленность"],
+    participationCost: "Бесплатно / Практика",
+    financialSupport: false,
     deadline: "Регулярный набор",
-    description: "Практика в ключевых департаментах Минпромторга РФ: господдержка, ВЭД и промышленная аналитика.",
-    officialUrl: "https://minpromtorg.gov.ru"
+    deadlineDate: "2026-12-10",
+    status: "Набор проводится регулярно",
+    eligibility: "Студенты ведущих вузов",
+    description: "Практика в ключевых департаментах Минпромторга РФ: господдержка, ВЭД и промышленная аналитика."
   },
   {
     id: 117,
     title: "XV Стажерская программа Минкультуры России",
-    category: "Стажировки",
-    subjects: ["культура", "госуправление"],
+    category: "Стажировки и карьера",
+    organizer: "Министерство культуры РФ",
+    officialUrl: "https://culture.gov.ru",
+    region: ["Москва"],
     format: "Офлайн",
-    region: "Москва",
+    ageLabel: "18–27 лет",
     ageMin: 18,
     ageMax: 27,
     audience: ["Студенты"],
+    subjects: ["культура", "госуправление"],
+    participationCost: "Бесплатно / Практика",
+    financialSupport: false,
     deadline: "Ноябрь 2026",
-    description: "Опыт координации федеральных проектов в сфере искусства и культурного наследия.",
-    officialUrl: "https://culture.gov.ru"
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты гуманитарных факультетов",
+    description: "Опыт координации федеральных проектов в сфере искусства и культурного наследия."
   },
   {
     id: 118,
     title: "Стажер-аналитик данных в инвестпроектах (Содружество)",
-    category: "Стажировки",
-    subjects: ["инвестиции", "финансы"],
+    category: "Стажировки и карьера",
+    organizer: "ГК «Содружество»",
+    officialUrl: "https://sodrugestvo.ru",
+    region: ["Москва"],
     format: "Гибрид",
-    region: "Москва",
+    ageLabel: "19–26 лет",
     ageMin: 19,
     ageMax: 26,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["инвестиции", "финансы"],
+    participationCost: "Оплачивается",
+    financialSupport: true,
     deadline: "Набор открыт",
-    description: "Оценка финансовой эффективности крупных инвестпроектов и построение моделей в Excel.",
-    officialUrl: "https://sodrugestvo.ru"
+    deadlineDate: "2026-11-27",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты финансовых и математических специальностей",
+    description: "Оценка финансовой эффективности крупных инвестпроектов и построение моделей в Excel."
   },
   {
     id: 119,
     title: "Аналитик M&A и стратегии (СУЭК)",
-    category: "Стажировки",
-    subjects: ["m&a", "корпоративные финансы"],
+    category: "Стажировки и карьера",
+    organizer: "АО «СУЭК»",
+    officialUrl: "https://suek.ru",
+    region: ["Москва"],
     format: "Офлайн",
-    region: "Москва",
+    ageLabel: "20–27 лет",
     ageMin: 20,
     ageMax: 27,
     audience: ["Выпускники", "Студенты"],
+    subjects: ["m&a", "корпоративные финансы"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Срочный отбор",
-    description: "Участие в сделках слияний и поглощений (M&A) и разработка стратегии горнорудной компании.",
-    officialUrl: "https://suek.ru"
+    deadlineDate: "2026-11-22",
+    status: "Приём заявок открыт",
+    eligibility: "Выпускники и студенты магистратуры ведущих экономических вузов",
+    description: "Участие в сделках слияний и поглощений (M&A) и разработка стратегии горнорудной компании."
   },
   {
     id: 120,
     title: "Junior ML-Engineer / Data Scientist (Поле.рф)",
-    category: "Стажировки",
-    subjects: ["ml", "python", "data science"],
+    category: "Стажировки и карьера",
+    organizer: "Маркетплейс Поле.рф",
+    officialUrl: "https://pole.rf",
+    region: ["Вся Россия"],
     format: "Удаленный / Офлайн",
-    region: "Все регионы",
+    ageLabel: "18–28 лет",
     ageMin: 18,
     ageMax: 28,
     audience: ["Студенты", "Выпускники"],
+    subjects: ["ml", "python", "data science"],
+    participationCost: "Оплачивается работодателем",
+    financialSupport: true,
     deadline: "Набор открыт",
-    description: "Разработка ML-моделей кредитного скоринга и рекомендательных алгоритмов для маркетплейса.",
-    officialUrl: "https://pole.rf"
+    deadlineDate: "2026-11-29",
+    status: "Приём заявок открыт",
+    eligibility: "Студенты и выпускники IT-направлений",
+    description: "Разработка ML-моделей кредитного скоринга и рекомендательных алгоритмов для маркетплейса."
   },
   {
     id: 121,
     title: "Олимпиадная школа «Кружок»: подготовка к ВсОШ",
-    category: "Онлайн-школы",
-    subjects: ["олимпиады", "всош", "экономика"],
+    category: "Онлайн-школы и подготовка",
+    organizer: "Проект «Кружок»",
+    officialUrl: "https://kruzhok.org",
+    region: ["Вся Россия"],
     format: "Онлайн",
-    region: "Все регионы",
+    ageLabel: "13–18 лет",
     ageMin: 13,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["олимпиады", "всош", "экономика"],
+    participationCost: "Бесплатно",
+    financialSupport: false,
     deadline: "Круглый год",
-    description: "Бесплатные интенсивы по подготовке к муниципальному и региональному этапам ВсОШ.",
-    officialUrl: "https://kruzhok.org"
+    deadlineDate: "2026-12-31",
+    status: "Набор проводится регулярно",
+    eligibility: "Школьники 7–11 классов",
+    description: "Бесплатные интенсивы по подготовке к муниципальному и региональному этапам ВсОШ."
   },
   {
     id: 122,
     title: "Атриум: естественно-научные сборы",
-    category: "Онлайн-школы",
-    subjects: ["химия", "биология", "физика"],
+    category: "Онлайн-школы и подготовка",
+    organizer: "Образовательный центр «Атриум»",
+    officialUrl: "https://atrium-edu.ru",
+    region: ["Вся Россия"],
     format: "Онлайн / Выездные",
-    region: "Все регионы",
+    ageLabel: "13–18 лет",
     ageMin: 13,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["химия", "биология", "физика"],
+    participationCost: "Платно / Есть грантовые места",
+    financialSupport: true,
     deadline: "Набор открыт",
-    description: "Специализированная олимпиадная подготовка к перечням РСОШ по химии, биологии и физике.",
-    officialUrl: "https://atrium-edu.ru"
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Олимпиадники 8–11 классов",
+    description: "Специализированная олимпиадная подготовка к перечням РСОШ по химии, биологии и физике."
   },
   {
     id: 123,
     title: "Олимпиадные программы «Сколково» (IT/Математика)",
-    category: "Онлайн-школы",
-    subjects: ["математика", "программирование"],
+    category: "Онлайн-школы и подготовка",
+    organizer: "Технопарк Сколково",
+    officialUrl: "https://sk.ru",
+    region: ["Вся Россия"],
     format: "Онлайн",
-    region: "Все регионы",
+    ageLabel: "14–18 лет",
     ageMin: 14,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["математика", "программирование"],
+    participationCost: "Бесплатно при отборе",
+    financialSupport: false,
     deadline: "Идет запись",
-    description: "Курсы углубленного решения задач олимпиад 1-го уровня по математике и информатике.",
-    officialUrl: "https://sk.ru"
+    deadlineDate: "2026-11-27",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 8–11 классов",
+    description: "Курсы углубленного решения задач олимпиад 1-го уровня по математике и информатике."
   },
   {
     id: 124,
     title: "Олимпиада «Физтех» (МФТИ) — I уровень РСОШ",
-    category: "Олимпиады и конкурсы",
-    subjects: ["физика", "математика", "бви"],
+    category: "Олимпиады",
+    organizer: "МФТИ",
+    officialUrl: "https://olymp.mipt.ru",
+    region: ["Вся Россия"],
     format: "Онлайн + Офлайн",
-    region: "Все регионы",
+    ageLabel: "14–18 лет",
     ageMin: 14,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["физика", "математика", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Ноябрь–Декабрь",
-    description: "Олимпиада МФТИ. Дает право поступления БВИ в МФТИ, Бауманку, ВШЭ при подтверждении 85+ ЕГЭ.",
-    officialUrl: "https://olymp.mipt.ru"
+    deadlineDate: "2026-12-05",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 8–11 классов",
+    description: "Олимпиада МФТИ. Дает право поступления БВИ в МФТИ, Бауманку, ВШЭ при подтверждении 85+ ЕГЭ."
   },
   {
     id: 125,
     title: "Олимпиада «Росатом» (НИЯУ МИФИ) — I/II уровень",
-    category: "Олимпиады и конкурсы",
-    subjects: ["физика", "математика", "бви"],
+    category: "Олимпиады",
+    organizer: "НИЯУ МИФИ & Росатом",
+    officialUrl: "https://mephi.ru",
+    region: ["Вся Россия"],
     format: "Онлайн + Офлайн",
-    region: "Все регионы",
+    ageLabel: "13–18 лет",
     ageMin: 13,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["физика", "математика", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Декабрь",
-    description: "Олимпиада Госкорпорации Росатом и МИФИ: дает БВИ или 100 баллов при подтверждении классическим результатом 75+ ЕГЭ.",
-    officialUrl: "https://mephi.ru"
+    deadlineDate: "2026-12-18",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Олимпиада Росатома и МИФИ: дает БВИ или 100 баллов при подтверждении 75+ ЕГЭ."
   },
   {
     id: 126,
     title: "Олимпиада «Ломоносов» (МГУ)",
-    category: "Олимпиады и конкурсы",
-    subjects: ["математика", "обществознание", "бви"],
+    category: "Олимпиады",
+    organizer: "МГУ им. М.В. Ломоносова",
+    officialUrl: "https://olymp.msu.ru",
+    region: ["Вся Россия"],
     format: "Онлайн + Финал",
-    region: "Все регионы",
+    ageLabel: "12–18 лет",
     ageMin: 12,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["математика", "обществознание", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Ноябрь 2026",
-    description: "Флагманская университетская олимпиада МГУ. Предоставляет льготы БВИ и 100 баллов по всей РФ.",
-    officialUrl: "https://olymp.msu.ru"
+    deadlineDate: "2026-11-23",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 5–11 классов",
+    description: "Флагманская университетская олимпиада МГУ. Предоставляет льготы БВИ и 100 баллов по всей РФ."
   },
   {
     id: 127,
     title: "Всесибирская олимпиада школьников (НГУ)",
-    category: "Олимпиады и конкурсы",
-    subjects: ["химия", "биология", "физика"],
+    category: "Олимпиады",
+    organizer: "СУНЦ НГУ, Новосибирский госуниверситет",
+    officialUrl: "https://sesc.nsu.ru",
+    region: ["Вся Россия"],
     format: "Очно-заочный",
-    region: "Все регионы",
+    ageLabel: "13–18 лет",
     ageMin: 13,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["химия", "биология", "физика"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Ноябрь 2026",
-    description: "Олимпиада 1-го и 2-го уровней: результаты засчитываются МФТИ, НГУ, СПбГУ и МГТУ им. Баумана для БВИ.",
-    officialUrl: "https://sesc.nsu.ru"
+    deadlineDate: "2026-11-25",
+    status: "Приём заявок открыт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Олимпиада 1-го и 2-го уровней: результаты засчитываются МФТИ, НГУ, СПбГУ и МГТУ для БВИ."
   },
   {
     id: 128,
     title: "Олимпиада «Курчатов» (НИЦ Курчатовский ин-т)",
-    category: "Олимпиады и конкурсы",
-    subjects: ["физика", "математика", "бви"],
+    category: "Олимпиады",
+    organizer: "НИЦ «Курчатовский институт» и ЦПМ",
+    officialUrl: "https://kurchatov.olimpiada.ru",
+    region: ["Вся Россия"],
     format: "Онлайн + Офлайн",
-    region: "Все регионы",
+    ageLabel: "13–18 лет",
     ageMin: 13,
     ageMax: 18,
     audience: ["Школьники"],
+    subjects: ["физика", "математика", "бви"],
+    participationCost: "Бесплатно",
+    financialSupport: true,
     deadline: "Январь–Февраль",
-    description: "Олимпиада ЦПМ и Курчатовского института. Входит в перечень РСОШ, гарантирует поступление БВИ.",
-    officialUrl: "https://kurchatov.olimpiada.ru"
+    deadlineDate: "2026-02-05",
+    status: "Скоро старт",
+    eligibility: "Школьники 7–11 классов",
+    description: "Олимпиада ЦПМ и Курчатовского института. Входит в перечень РСОШ, гарантирует поступление БВИ."
   }
 ];
 
-// ==========================================================================
-// 3. БЕЗОПАСНАЯ ЛОГИКА ИНТЕРФЕЙСА (ДЛЯ ПЛАНШЕТОВ И SAFARI)
-// ==========================================================================
-
+// =========================================================================
+// 3. БЕЗОПАСНАЯ ЛОГИКА ИНТЕРФЕЙСА (ДЛЯ SAFARI И ПЛАНШЕТОВ)
+// =========================================================================
+const ageBands = {'14-17':[14,17],'18-21':[18,21],'22-25':[22,25],'26-30':[26,30],'31-35':[31,35]};
 let currentCategory = 'all';
 let currentSearch = '';
+let currentSubject = '';
 let currentRegion = 'all';
 let currentAudience = 'all';
 let currentFormat = 'all';
+let currentSupport = '';
 let isViewingFavoritesOnly = false;
 let favorites = [];
+let viewed = [];
 
-// Безопасная работа с хранилищем (защита от краша Safari в инкогнито)
 try {
-  const saved = localStorage.getItem('ravny_favs_v2');
-  if (saved) favorites = JSON.parse(saved);
+  favorites = JSON.parse(localStorage.getItem('ravny_favs_monolith') || '[]');
+  viewed = JSON.parse(localStorage.getItem('ravny_view_monolith') || '[]');
 } catch (e) {
   favorites = [];
+  viewed = [];
 }
 
-function getCardsContainer() {
-  return document.getElementById('cardsContainer') || document.querySelector('.cards-grid');
-}
-
-function getCountDisplay() {
-  return document.getElementById('countDisplay') || document.querySelector('.stats-count');
-}
-
-function updateFavBadge() {
-  const b = document.getElementById('favBadge') || document.querySelector('.fav-count-badge');
-  if (b) b.textContent = favorites.length;
-}
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function isFav(id) {
   return favorites.includes(id);
 }
 
-function toggleFavorite(id) {
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(item => item !== id);
-  } else {
-    favorites.push(id);
-  }
-  try {
-    localStorage.setItem('ravny_favs_v2', JSON.stringify(favorites));
-  } catch (e) {}
-  updateFavBadge();
-  renderFeed();
+function updateFavBadge() {
+  const badge = $('savedCount') || $('favBadge') || document.querySelector('.fav-count-badge');
+  if (badge) badge.textContent = favorites.length;
 }
 
-function filterOpportunities() {
+function toggleFavorite(id) {
+  favorites = favorites.includes(id) ? favorites.filter(x => x !== id) : [...favorites, id];
+  try {
+    localStorage.setItem('ravny_favs_monolith', JSON.stringify(favorites));
+  } catch (e) {}
+  updateFavBadge();
+  renderCatalog();
+}
+
+function isOnline(o) { return /онлайн|дистанц|заочн|гибрид|смешан/i.test(o.format || ''); }
+function isOffline(o) { return /очно|офлайн/i.test(o.format || '') && !/онлайн/i.test(o.format || ''); }
+
+function freeMatch(o) { return /бесплатно/i.test(o.participationCost || ''); }
+
+function deadlineKey(o) {
+  if (o.deadlineDate && /^\d{4}-\d\d-\d\d$/.test(o.deadlineDate)) return o.deadlineDate;
+  return '9999-12-31';
+}
+
+function filterList() {
   return opportunities.filter(item => {
     if (isViewingFavoritesOnly && !isFav(item.id)) return false;
-    if (currentCategory !== 'all' && item.category !== currentCategory) return false;
 
-    if (currentRegion !== 'all') {
-      if (currentRegion === 'Москва' && !item.region.includes('Москва')) return false;
-      if (currentRegion === 'Все регионы' && !item.region.includes('Все регионы') && !item.format.includes('Онлайн')) return false;
+    // Категория
+    if (currentCategory !== 'all' && currentCategory !== '') {
+      if (item.category !== currentCategory) return false;
     }
 
-    if (currentAudience !== 'all') {
-      const match = item.audience.some(a => a.toLowerCase().includes(currentAudience.toLowerCase()));
+    // Регион
+    if (currentRegion !== 'all' && currentRegion !== '') {
+      if (currentRegion === 'Москва' && !item.region.some(r => r.includes('Москва'))) return false;
+      if (currentRegion === 'Вся Россия' && !item.region.some(r => r.includes('Вся Россия')) && !isOnline(item)) return false;
+    }
+
+    // Аудитория
+    if (currentAudience !== 'all' && currentAudience !== '') {
+      const match = (item.audience || []).some(a => a.toLowerCase().includes(currentAudience.toLowerCase())) ||
+                    (item.eligibility || '').toLowerCase().includes(currentAudience.toLowerCase());
       if (!match) return false;
     }
 
-    if (currentFormat !== 'all') {
-      if (currentFormat === 'Онлайн' && !item.format.includes('Онлайн')) return false;
-      if (currentFormat === 'Офлайн' && !item.format.includes('Офлайн')) return false;
+    // Формат
+    if (currentFormat !== 'all' && currentFormat !== '') {
+      if (currentFormat === 'Онлайн' && !isOnline(item)) return false;
+      if (currentFormat === 'Офлайн' && !isOffline(item)) return false;
     }
 
+    // Финансовые условия
+    if (currentSupport === 'yes' && !item.financialSupport) return false;
+    if (currentSupport === 'free' && !freeMatch(item)) return false;
+
+    // Предмет или направление
+    if (currentSubject.trim() !== '') {
+      const s = currentSubject.toLowerCase();
+      const matchSubj = (item.subjects || []).some(subj => subj.toLowerCase().includes(s));
+      const matchText = (item.title + ' ' + item.description).toLowerCase().includes(s);
+      if (!matchSubj && !matchText) return false;
+    }
+
+    // Поиск по ключевому слову
     if (currentSearch.trim() !== '') {
       const q = currentSearch.toLowerCase();
       const matchTitle = item.title.toLowerCase().includes(q);
       const matchDesc = item.description.toLowerCase().includes(q);
-      const matchSubj = item.subjects.some(s => s.toLowerCase().includes(q));
-      if (!matchTitle && !matchDesc && !matchSubj) return false;
+      const matchOrg = (item.organizer || '').toLowerCase().includes(q);
+      const matchSubj = (item.subjects || []).some(s => s.toLowerCase().includes(q));
+      if (!matchTitle && !matchDesc && !matchOrg && !matchSubj) return false;
     }
 
     return true;
   });
 }
 
-function renderFeed() {
-  const container = getCardsContainer();
+function cardHTML(o) {
+  const saved = isFav(o.id);
+  const subjects = (o.subjects || []).slice(0, 4).map(s => `<span class="subject-tag meta-tag">${esc(s)}</span>`).join('');
+
+  return `
+    <article class="op-card card">
+      <div>
+        <div class="card-top">
+          <span class="tag card-category">${esc(o.category)}</span>
+          <button class="card-fav-btn icon-btn ${saved ? 'saved is-fav' : ''}" onclick="toggleFavorite(${o.id})">★</button>
+        </div>
+        <h3 class="card-title">${esc(o.title)}</h3>
+        <p class="desc card-desc">${esc(o.description)}</p>
+        <div class="subject-tags card-meta">${subjects}</div>
+      </div>
+      <div>
+        <div class="meta-list card-meta">
+          <span class="meta-tag">🏢 ${esc(o.organizer || 'Организатор')}</span>
+          <span class="meta-tag">📍 ${esc((o.region || []).join(', '))}</span>
+          <span class="meta-tag">🌐 ${esc(o.format)}</span>
+          ${o.deadline ? `<span class="meta-tag" style="background:#fee2e2;color:#800020;font-weight:700;">⏳ ${esc(o.deadline)}</span>` : ''}
+        </div>
+        <div class="card-bottom card-actions">
+          <button class="btn btn-card btn-card-outline" onclick="openDetail(${o.id})">Подробнее</button>
+          <a href="${esc(o.officialUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-card btn-card-solid">Источник ↗</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderCatalog() {
+  const container = $('catalogCards') || $('cardsContainer') || document.querySelector('.cards-grid');
+  const counter = $('resultsCount') || $('countDisplay');
+  const emptyState = $('emptyState');
   if (!container) return;
 
-  const filtered = filterOpportunities();
-  const counter = getCountDisplay();
-  if (counter) counter.textContent = filtered.length;
+  const list = filterList();
 
-  const emptyState = document.getElementById('emptyState');
-  if (filtered.length === 0) {
+  // Сортировка по дедлайну
+  const sort = $('sortDeadline') ? $('sortDeadline').value : 'soon';
+  if (sort === 'title') list.sort((a,b) => a.title.localeCompare(b.title, 'ru'));
+  else list.sort((a,b) => deadlineKey(a).localeCompare(deadlineKey(b)));
+
+  if (counter) {
+    counter.textContent = $('resultsCount') ? `Найдено: ${list.length} из ${opportunities.length}` : list.length;
+  }
+
+  if (list.length === 0) {
     container.innerHTML = '';
     if (emptyState) emptyState.style.display = 'block';
     return;
   }
   if (emptyState) emptyState.style.display = 'none';
 
-  container.innerHTML = filtered.map(item => `
-    <div class="card">
-      <div>
-        <div class="card-top">
-          <span class="card-category">${item.category}</span>
-          <button class="card-fav-btn ${isFav(item.id) ? 'is-fav' : ''}" onclick="toggleFavorite(${item.id})">★</button>
-        </div>
-        <h3 class="card-title">${item.title}</h3>
-        <p class="card-desc">${item.description}</p>
-      </div>
-      <div>
-        <div class="card-meta">
-          <span class="meta-tag">📍 ${item.region}</span>
-          <span class="meta-tag">💻 ${item.format}</span>
-          <span class="meta-tag">👤 ${item.audience.join(', ')}</span>
-          ${item.deadline ? `<span class="meta-tag" style="background:#fee2e2;color:#800020;font-weight:700;">⏳ ${item.deadline}</span>` : ''}
-        </div>
-        <div class="card-actions">
-          <button class="btn-card btn-card-outline" onclick="openDetailsModal(${item.id})">Подробнее</button>
-          <a href="${item.officialUrl}" target="_blank" rel="noopener noreferrer" class="btn-card btn-card-solid">Источник ↗</a>
-        </div>
-      </div>
-    </div>
-  `).join('');
+  container.innerHTML = list.map(o => cardHTML(o)).join('');
 }
 
 function handleSearch() {
-  const el = document.getElementById('searchInput');
+  const el = $('searchInput');
   if (el) currentSearch = el.value;
-  renderFeed();
+  renderCatalog();
 }
 
 function handleFilter() {
-  const r = document.getElementById('regionSelect');
-  const a = document.getElementById('audienceSelect');
-  const f = document.getElementById('formatSelect');
+  const r = $('filterRegion') || $('regionSelect');
+  const a = $('filterEducation') || $('audienceSelect');
+  const f = $('filterFormat') || $('formatSelect');
+  const cat = $('filterDirection');
+  const subj = $('filterSubject');
+  const supp = $('filterSupport');
+
   if (r) currentRegion = r.value;
   if (a) currentAudience = a.value;
   if (f) currentFormat = f.value;
-  renderFeed();
+  if (cat) currentCategory = cat.value;
+  if (subj) currentSubject = subj.value;
+  if (supp) currentSupport = supp.value;
+
+  renderCatalog();
 }
 
 function setCategory(cat) {
@@ -742,83 +1803,102 @@ function setCategory(cat) {
   document.querySelectorAll('.pill-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.cat === cat);
   });
-  renderFeed();
+  const dirSelect = $('filterDirection');
+  if (dirSelect) dirSelect.value = cat === 'all' ? '' : cat;
+  renderCatalog();
 }
 
 function resetFilters() {
-  currentCategory = 'all'; 
-  currentSearch = ''; 
-  currentRegion = 'all'; 
-  currentAudience = 'all'; 
-  currentFormat = 'all'; 
+  currentCategory = 'all';
+  currentSearch = '';
+  currentSubject = '';
+  currentRegion = 'all';
+  currentAudience = 'all';
+  currentFormat = 'all';
+  currentSupport = '';
   isViewingFavoritesOnly = false;
 
-  if (document.getElementById('searchInput')) document.getElementById('searchInput').value = '';
-  if (document.getElementById('regionSelect')) document.getElementById('regionSelect').value = 'all';
-  if (document.getElementById('audienceSelect')) document.getElementById('audienceSelect').value = 'all';
-  if (document.getElementById('formatSelect')) document.getElementById('formatSelect').value = 'all';
-  if (document.getElementById('btnViewAll')) document.getElementById('btnViewAll').classList.add('active');
-  if (document.getElementById('btnViewFavs')) document.getElementById('btnViewFavs').classList.remove('active');
-  
-  const feedTitle = document.getElementById('feedTitle');
-  if (feedTitle) feedTitle.textContent = 'Каталог возможностей';
-  
-  document.querySelectorAll('.pill-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.cat === 'all');
+  ['searchInput', 'filterSubject', 'filterDirection', 'filterRegion', 'filterFormat', 'filterEducation', 'filterSupport', 'regionSelect', 'audienceSelect', 'formatSelect'].forEach(id => {
+    if ($(id)) $(id).value = ($(id).tagName === 'SELECT' ? ($(id).querySelector('option[value="all"]') ? 'all' : '') : '');
   });
-  renderFeed();
+
+  document.querySelectorAll('.pill-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === 'all'));
+  const btnAll = $('btnViewAll');
+  const btnFavs = $('btnViewFavs');
+  if (btnAll) btnAll.classList.add('active');
+  if (btnFavs) btnFavs.classList.remove('active');
+
+  renderCatalog();
 }
 
 function applySearchScroll() {
   handleFilter();
   handleSearch();
-  const area = document.querySelector('.content-area') || getCardsContainer();
+  const area = $('catalogCards') || $('cardsContainer') || document.querySelector('.content-area');
   if (area) area.scrollIntoView({ behavior: 'smooth' });
 }
 
 function showAll() {
   isViewingFavoritesOnly = false;
-  if (document.getElementById('btnViewAll')) document.getElementById('btnViewAll').classList.add('active');
-  if (document.getElementById('btnViewFavs')) document.getElementById('btnViewFavs').classList.remove('active');
-  const feedTitle = document.getElementById('feedTitle');
-  if (feedTitle) feedTitle.textContent = 'Каталог возможностей';
-  renderFeed();
+  if ($('btnViewAll')) $('btnViewAll').classList.add('active');
+  if ($('btnViewFavs')) $('btnViewFavs').classList.remove('active');
+  renderCatalog();
 }
 
 function showFavorites() {
   isViewingFavoritesOnly = true;
-  if (document.getElementById('btnViewAll')) document.getElementById('btnViewAll').classList.remove('active');
-  if (document.getElementById('btnViewFavs')) document.getElementById('btnViewFavs').classList.add('active');
-  const feedTitle = document.getElementById('feedTitle');
-  if (feedTitle) feedTitle.textContent = 'Избранные возможности';
-  renderFeed();
+  if ($('btnViewAll')) $('btnViewAll').classList.remove('active');
+  if ($('btnViewFavs')) $('btnViewFavs').classList.add('active');
+  renderCatalog();
 }
 
-function openDetailsModal(id) {
-  const item = opportunities.find(o => o.id === id);
-  if (!item) return;
-  if (document.getElementById('modalCategory')) document.getElementById('modalCategory').textContent = item.category;
-  if (document.getElementById('modalTitle')) document.getElementById('modalTitle').textContent = item.title;
-  if (document.getElementById('modalDescription')) document.getElementById('modalDescription').textContent = item.description;
-  if (document.getElementById('modalFormat')) document.getElementById('modalFormat').textContent = `${item.format} (${item.region})`;
-  if (document.getElementById('modalAudience')) document.getElementById('modalAudience').textContent = `${item.audience.join(', ')} (возраст: ${item.ageMin}–${item.ageMax} лет)`;
-  
-  const deadlineSec = document.getElementById('modalDeadlineSection');
-  if (deadlineSec) {
-    if (item.deadline) {
-      deadlineSec.style.display = 'block';
-      document.getElementById('modalDeadline').textContent = item.deadline;
-    } else {
-      deadlineSec.style.display = 'none';
-    }
+function openDetail(id) {
+  const o = opportunities.find(x => x.id === id);
+  if (!o) return;
+
+  // Если есть встроенная страница детали (как в index.html)
+  const detailWrap = $('page-detail');
+  if (detailWrap && $('detailContent')) {
+    const saved = isFav(o.id);
+    $('detailContent').innerHTML = `
+      <article class="detail-card">
+        <span class="tag">${esc(o.category)}</span> <span class="status-pill">${esc(o.status || 'Набор')}</span>
+        <h1>${esc(o.title)}</h1>
+        <p style="color:var(--muted)">${esc(o.description)}</p>
+        <div class="detail-meta">
+          <span>🏢 ${esc(o.organizer || 'Организатор')}</span>
+          <span>📍 ${esc((o.region || []).join(', '))}</span>
+          <span>🌐 ${esc(o.format)}</span>
+        </div>
+        <div class="subject-tags">${(o.subjects || []).map(s => `<span class="subject-tag">${esc(s)}</span>`).join('')}</div>
+        <div class="notice">Информация проверена. Сроки и регистрационные формы могут уточняться организатором. Сверяйте детали в официальном источнике.</div>
+        <div class="detail-section"><h3>Для кого</h3><p>${esc(o.eligibility || 'Школьники / студенты')}</p></div>
+        <div class="detail-section"><h3>Сроки и статус</h3><p><strong>${esc(o.deadline)}</strong><br>${esc(o.status || '')}</p></div>
+        <div class="detail-section"><h3>Условия участия</h3><p>${esc(o.participationCost || 'Бесплатно')}. ${o.financialSupport ? 'Предусмотрена финансовая поддержка или оплата.' : 'Бесплатное участие.'}</p></div>
+        <div class="detail-actions" style="margin-top:1.5rem;display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn btn-primary" href="${esc(o.officialUrl)}" target="_blank" rel="noopener noreferrer">Открыть официальный источник ↗</a>
+          <button class="btn btn-light" onclick="toggleFavorite(${Number(o.id)})">${saved ? '♥ В избранном' : '♡ Добавить в избранное'}</button>
+        </div>
+      </article>
+    `;
+    if (typeof showPage === 'function') showPage('detail');
+    return;
   }
-  if (document.getElementById('modalLink')) document.getElementById('modalLink').href = item.officialUrl;
-  const backdrop = document.getElementById('modalBackdrop');
+
+  // Если работает всплывающее модальное окно
+  if ($('modalCategory')) $('modalCategory').textContent = o.category;
+  if ($('modalTitle')) $('modalTitle').textContent = o.title;
+  if ($('modalDescription')) $('modalDescription').textContent = o.description;
+  if ($('modalFormat')) $('modalFormat').textContent = `${o.format} (${(o.region || []).join(', ')})`;
+  if ($('modalAudience')) $('modalAudience').textContent = `${(o.audience || []).join(', ')} (${o.ageLabel || ''})`;
+  if ($('modalDeadline')) $('modalDeadline').textContent = o.deadline || 'По набору';
+  if ($('modalLink')) $('modalLink').href = o.officialUrl;
+  const backdrop = $('modalBackdrop');
   if (backdrop) backdrop.classList.add('open');
 }
 
 function closeModal() {
-  const backdrop = document.getElementById('modalBackdrop');
+  const backdrop = $('modalBackdrop');
   if (backdrop) backdrop.classList.remove('open');
 }
 
@@ -830,14 +1910,29 @@ window.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 
-// Запуск отображения
-function initCatalog() {
+// =========================================================================
+// 4. ИНИЦИАЛИЗАЦИЯ И СВЯЗЫВАНИЕ СОБЫТИЙ
+// =========================================================================
+function initCatalogApp() {
   updateFavBadge();
-  renderFeed();
+
+  // Привязка инпутов, если они есть
+  const searchEl = $('searchInput');
+  if (searchEl) searchEl.addEventListener('input', handleSearch);
+
+  ['filterRegion', 'regionSelect', 'filterEducation', 'audienceSelect', 'filterFormat', 'formatSelect', 'filterDirection', 'filterSubject', 'filterSupport', 'sortDeadline'].forEach(id => {
+    const el = $(id);
+    if (el) {
+      el.addEventListener('change', handleFilter);
+      el.addEventListener('input', handleFilter);
+    }
+  });
+
+  renderCatalog();
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCatalog);
+  document.addEventListener('DOMContentLoaded', initCatalogApp);
 } else {
-  initCatalog();
+  initCatalogApp();
 }
