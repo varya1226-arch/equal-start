@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#635bdb">
+<title>Равный старт — навигатор возможностей</title>
+<style>
+:root{
+ --primary:#635bdb;--primary-dark:#5148c5;--lav:#efedff;--blue:#eaf3ff;
+ --ink:#20223a;--muted:#69708a;--line:#e7e8f1;--bg:#f8f9fd;
+ --green:#21865b;--green-bg:#e9f7ef;--white:#fff;--shadow:0 12px 35px rgba(38,43,94,.08);
+ --radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #a9a3ff;outline-offset:2px}
+.container{width:min(1160px,calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:19px;letter-spacing:-.5px}
+.brand-mark{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,#7c73f1,#5148c5);display:grid;place-items:center;color:#fff;font-size:20px;box-shadow:0 7px 15px #635bdb33}
+.navlinks{display:flex;align-items:center;gap:7px}
+.navlinks button,.mobile-menu button{border:0;background:transparent;padding:10px 13px;border-radius:11px;color:#565b74;font-weight:650}
+.navlinks button:hover,.navlinks button.active{background:var(--lav);color:var(--primary)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.saved-pill{border:1px solid var(--line);background:white;border-radius:12px;padding:10px 13px;color:var(--ink);font-weight:700}
+.saved-pill span{background:var(--lav);color:var(--primary);border-radius:20px;padding:2px 7px;margin-left:5px}
+.menu-toggle{display:none;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 12px}
+.mobile-menu{display:none;padding:0 20px 14px}
+.mobile-menu.open{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.hero{padding:62px 0 48px;background:radial-gradient(circle at 90% 5%,#e5e3ff 0,transparent 31%),linear-gradient(120deg,#f1f0ff,#f7faff 55%,#eef7ff)}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:40px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e7e4ff;border-radius:30px;padding:7px 12px;color:var(--primary);font-size:12px;font-weight:800;letter-spacing:.3px;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:#37b77b}
+h1{font-size:clamp(38px,5vw,60px);line-height:1.06;letter-spacing:-2.4px;margin:20px 0 18px}
+.gradient{background:linear-gradient(90deg,#635bdb,#3b80d9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy{font-size:18px;color:#5d6380;max-width:590px;margin:0 0 26px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:13px;padding:13px 19px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 8px 18px #635bdb35}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn-light:hover{border-color:#c8c4ff;color:var(--primary)}
+.hero-note{font-size:12px;color:#858aa0;margin-top:16px}
+.hero-art{min-height:340px;position:relative;display:grid;place-items:center}
+.art-orbit{width:min(360px,90%);aspect-ratio:1;border-radius:50%;background:linear-gradient(145deg,#e1ddff,#dceeff);position:relative;display:grid;place-items:center}
+.art-core{width:145px;height:145px;border-radius:42px;background:linear-gradient(145deg,#8178f4,#5148c5);display:grid;place-items:center;color:#fff;font-size:64px;box-shadow:0 20px 45px #5148c555;transform:rotate(-7deg)}
+.float-card{position:absolute;background:#fff;padding:13px 16px;border-radius:16px;box-shadow:var(--shadow);font-weight:750;font-size:13px}
+.float-card small{display:block;color:var(--muted);font-weight:500;font-size:11px}
+.fc1{top:28px;left:0}.fc2{right:-8px;top:105px}.fc3{bottom:20px;left:15px}
+.float-icon{font-size:20px;margin-right:7px}
+section{padding:65px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:26px}
+.kicker{color:var(--primary);font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:1px}
+h2{font-size:clamp(27px,3vw,36px);line-height:1.2;letter-spacing:-1px;margin:8px 0}
+.section-sub{color:var(--muted);margin:8px 0 0;max-width:650px}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.category{border:1px solid var(--line);background:#fff;border-radius:18px;padding:20px;text-align:left;transition:.2s;min-height:145px}
+.category:hover{border-color:#c6c1ff;transform:translateY(-3px);box-shadow:var(--shadow)}
+.cat-icon{width:43px;height:43px;border-radius:14px;background:var(--lav);display:grid;place-items:center;font-size:21px;margin-bottom:12px}
+.category strong{display:block;font-size:15px}.category small{color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.step-num{width:38px;height:38px;border-radius:12px;background:var(--lav);color:var(--primary);display:grid;place-items:center;font-weight:850}
+.step h3{margin:15px 0 6px}.step p{margin:0;color:var(--muted);font-size:14px}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.why{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+.why-icon{font-size:25px}.why h3{font-size:16px;margin:10px 0 5px}.why p{font-size:13px;color:var(--muted);margin:0}
+.cta{background:linear-gradient(120deg,#635bdb,#4c79d7);color:#fff;border-radius:25px;padding:38px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.cta p{color:#e5e4ff;margin:7px 0 0}.cta .btn{background:white;color:var(--primary)}
+.form-panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:27px;box-shadow:var(--shadow);margin-top:30px}
+.form-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}.form-title .cat-icon{margin:0}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.field label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}
+.field select,.field input{width:100%;border:1px solid #dfe1ed;border-radius:12px;padding:12px 13px;background:#fff;color:var(--ink)}
+.field select:focus,.field input:focus{border-color:var(--primary);outline:3px solid #eeedff}
+.interests{grid-column:1/-1}
+.check-grid{display:flex;flex-wrap:wrap;gap:8px}
+.check-chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);padding:9px 12px;border-radius:30px;font-size:13px;color:#555b73}
+.check-chip:has(input:checked){background:var(--lav);border-color:#bcb6ff;color:var(--primary)}
+.form-actions{display:flex;justify-content:flex-end;margin-top:20px}
+.page{display:none;min-height:65vh;padding:45px 0 75px}.page.active{display:block}
+.page-title{margin-bottom:24px}.page-title h1{font-size:38px;letter-spacing:-1.4px;margin:8px 0}.page-title p{color:var(--muted);margin:0}
+.toolbar{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:10px;background:white;padding:15px;border:1px solid var(--line);border-radius:17px;margin-bottom:18px}
+.toolbar input,.toolbar select{width:100%;min-width:0;border:1px solid var(--line);border-radius:11px;padding:11px;background:#fff;color:var(--ink)}
+.results-meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin:12px 2px 16px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.op-card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:19px;display:flex;flex-direction:column;min-height:300px;transition:.2s}
+.op-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#d2ceff}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tag{font-size:11px;font-weight:800;padding:6px 9px;border-radius:20px;background:var(--lav);color:var(--primary)}
+.demo-tag{font-size:10px;color:#95651b;background:#fff5df;border-radius:20px;padding:5px 8px;font-weight:750}
+.op-card h3{font-size:17px;line-height:1.3;margin:15px 0 8px}
+.op-card .desc{font-size:13px;color:var(--muted);margin:0 0 13px}
+.meta-list{display:grid;gap:7px;font-size:12px;color:#666d83;margin-bottom:16px}
+.meta-list span{display:flex;gap:7px;align-items:flex-start}
+.card-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-bottom .btn{padding:9px 12px;font-size:12px}
+.icon-btn{width:37px;height:37px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:17px;color:#7a7f94}
+.icon-btn.saved{background:#fff0f3;color:#d94d70;border-color:#ffd4df}
+.empty{background:white;border:1px dashed #cfd1e0;border-radius:18px;padding:42px 20px;text-align:center;color:var(--muted);grid-column:1/-1}
+.empty .big{font-size:38px}.empty h3{color:var(--ink);margin:8px 0}
+.notice{background:#fff8e8;border:1px solid #f4dfae;color:#805d1c;border-radius:12px;padding:12px 14px;font-size:12px;margin:16px 0}
+.detail-wrap{max-width:850px;margin:auto}.back{border:0;background:transparent;color:var(--primary);font-weight:750;padding:8px 0;margin-bottom:12px}
+.detail-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px}
+.detail-card h1{font-size:34px;letter-spacing:-1px;margin:15px 0 10px}
+.detail-meta{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0}
+.detail-meta span{background:#f4f5fa;padding:7px 10px;border-radius:9px;font-size:12px;color:#555b73}
+.detail-section{border-top:1px solid var(--line);padding-top:19px;margin-top:20px}
+.detail-section h3{margin:0 0 9px}.detail-section p,.detail-section li{color:#626980;font-size:14px}
+.detail-section ul{padding-left:20px}
+.detail-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{background:white;border:1px solid var(--line);border-radius:19px;padding:22px}
+.panel h3{margin:0 0 14px}.mini-list{display:grid;gap:10px}
+.mini-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border-radius:12px;background:#f8f8fc;font-size:13px}
+.mini-item button{border:0;background:transparent;color:var(--primary);font-weight:750}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.about-box{background:white;border:1px solid var(--line);border-radius:19px;padding:24px}
+.about-box p{color:var(--muted)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.stat{background:var(--lav);border-radius:13px;padding:14px;text-align:center}
+.stat strong{display:block;color:var(--primary);font-size:23px}.stat small{font-size:11px;color:#666}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:12px;background:white}
+.footer-row{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#24253b;color:#fff;padding:12px 17px;border-radius:12px;box-shadow:var(--shadow);z-index:50;transition:.25s;font-size:13px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.loading{display:flex;align-items:center;gap:10px;color:var(--muted);padding:25px}
+.spinner{width:17px;height:17px;border:2px solid #ddd;border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr .8fr;gap:15px}.category-grid{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.toolbar{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){
+ .container{width:min(100% - 28px,560px)}.nav{height:66px}.navlinks{display:none}.menu-toggle{display:block}.saved-pill{padding:8px 10px;font-size:12px}
+ .hero{padding:42px 0 30px}.hero-grid{grid-template-columns:1fr}.hero-art{min-height:240px;order:-1}.art-orbit{width:220px}.art-core{width:100px;height:100px;font-size:44px;border-radius:30px}.fc1{top:8px;left:4px}.fc2{right:0;top:70px}.fc3{bottom:5px;left:5px}.float-card{padding:9px 11px;font-size:11px}
+ h1{font-size:42px;letter-spacing:-1.7px}.hero-copy{font-size:16px}
+ section{padding:45px 0}.steps,.why-grid{grid-template-columns:1fr}.category-grid{gap:10px}.category{padding:15px;min-height:130px}
+ .form-panel{padding:18px}.form-grid{grid-template-columns:1fr}.interests{grid-column:auto}.form-actions .btn{width:100%}
+ .toolbar{grid-template-columns:1fr 1fr}.toolbar .search-field{grid-column:1/-1}.cards{grid-template-columns:1fr}
+ .page{padding:30px 0 55px}.page-title h1{font-size:32px}.detail-card{padding:20px}.detail-card h1{font-size:29px}
+ .profile-grid,.about-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:repeat(3,1fr)}.cta{padding:25px;display:block}.cta .btn{margin-top:18px}
+ .section-head{display:block}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.status-pill{display:inline-flex;align-items:center;max-width:58%;font-size:10px;line-height:1.25;font-weight:800;padding:6px 9px;border-radius:20px;background:#fff4dc;color:#8a5b08}.match-reason{margin:8px 0 16px;padding:10px 12px;border-radius:12px;background:#eef7f1;color:#246a49;font-size:12px}.detail-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.detail-actions a{color:white}.mini-item a{color:var(--primary);font-weight:750}.toolbar{grid-template-columns:repeat(4,minmax(0,1fr))}.toolbar .search-field{grid-column:span 2}.about-box .stat strong{font-size:26px}@media(max-width:800px){.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar .search-field{grid-column:1/-1}}@media(max-width:520px){.toolbar{grid-template-columns:1fr}.toolbar .search-field{grid-column:auto}.status-pill{max-width:65%}.detail-actions .btn{width:100%}}@media print{header,footer,.back,.detail-actions,.toast{display:none!important}.page{display:none!important}.page#page-detail{display:block!important}.detail-card{box-shadow:none;border:0}}
+
+
+/* Улучшения поиска и каталога */
+.toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}
+.toolbar input,.toolbar select{min-height:44px}
+.match-reason{margin:9px 2px 18px;color:#59617b;font-size:13px}
+.match-score{display:inline-flex;align-items:center;gap:5px;background:#edf8f1;color:#176c48;border-radius:20px;padding:5px 9px;font-size:12px;font-weight:800}
+.subject-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.subject-tag{font-size:11px;color:#555b73;background:#f2f3f8;border-radius:20px;padding:4px 8px}
+.case-info{background:#f7f7ff;border:1px solid #e6e4ff;border-radius:13px;padding:12px;margin:12px 0;font-size:13px}
+.form-help{font-size:12px;color:var(--muted);margin-top:5px}
+.empty-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media(max-width:850px){.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.toolbar{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.form-panel{padding:19px}}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(23,25,45,.58);display:grid;place-items:center;padding:22px;overflow:auto}
+.modal-backdrop[hidden]{display:none}
+.modal-panel{position:relative;background:#fff;border-radius:22px;width:min(760px,100%);max-height:min(88vh,900px);overflow:auto;padding:30px;box-shadow:0 24px 80px #10122b55}
+.modal-close{position:sticky;top:0;float:right;border:0;background:#f0efff;color:#5148c5;border-radius:50%;width:38px;height:38px;font-size:25px;line-height:1}
+.modal-panel h2{padding-right:42px}
+.modal-source{display:inline-flex;margin:10px 8px 0 0;padding:11px 15px;border-radius:12px;background:var(--primary);color:white;font-weight:700}
+.modal-source.secondary{background:#f0efff;color:var(--primary)}
+</style>
+</head>
+<body>
+<header>
+ <div class="container nav">
+  <a class="brand" href="#" onclick="showPage('home');return false"><span class="brand-mark">↗</span>Равный старт</a>
+  <nav class="navlinks" aria-label="Основная навигация">
+   <button data-page="home">Главная</button><button class="active" data-page="catalog">Каталог</button><button data-page="saved">Мои возможности</button><button data-page="about">О проекте</button>
+  </nav>
+  <div class="nav-right"><button class="saved-pill" onclick="showPage('saved')">♡ Избранное <span id="savedCount">0</span></button><button class="menu-toggle" id="menuToggle" aria-label="Открыть меню">☰</button></div>
+ </div>
+ <div class="mobile-menu" id="mobileMenu">
+  <button data-page="home">Главная</button><button data-page="catalog">Каталог</button><button data-page="saved">Мои возможности</button><button data-page="about">О проекте</button>
+ </div>
+</header>
+
+<main>
+<div class="page" id="page-home" style="padding:0">
+ <div class="hero">
+  <div class="container hero-grid">
+   <div>
+    <span class="eyebrow"><span class="dot"></span> Навигатор возможностей для молодёжи</span>
+    <h1>Твой путь начинается с <span class="gradient">возможности</span></h1>
+    <p class="hero-copy">Образование, конкурсы, стажировки и поддержка — собрали в одном месте, чтобы ты мог(ла) найти следующий шаг к своей цели.</p>
+    <div class="hero-actions"><button class="btn btn-primary" onclick="document.getElementById('profileForm').scrollIntoView({behavior:'smooth'})">Подобрать возможности <span>→</span></button><button class="btn btn-light" onclick="showPage('catalog')">Смотреть каталог</button></div>
+    <div class="hero-note">Тестовая версия проекта · Данные-примеры отмечены отдельно</div>
+   </div>
+   <div class="hero-art" aria-label="Иллюстрация возможностей">
+    <div class="art-orbit"><div class="art-core">✦</div>
+     <div class="float-card fc1"><span class="float-icon">🎓</span>Учись<small>Новые знания и навыки</small></div>
+     <div class="float-card fc2"><span class="float-icon">🚀</span>Пробуй<small>Конкурсы и стажировки</small></div>
+     <div class="float-card fc3"><span class="float-icon">🌱</span>Расти<small>Твой следующий шаг</small></div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <section class="container" style="padding-top:28px">
+  <div class="form-panel" id="profileForm">
+   <div class="form-title"><div class="cat-icon">🧭</div><div><div class="kicker">Персональный подбор</div><h2 style="font-size:25px;margin:2px 0">Найди то, что подходит именно тебе</h2></div></div>
+   <form id="searchForm">
+    <div class="form-grid">
+     <div class="field"><label for="region">Регион проживания</label><select id="region"><option value="any">Любой регион</option><option>Москва</option><option>Санкт-Петербург</option><option>Республика Татарстан</option><option>Свердловская область</option><option>Новосибирская область</option><option>Кировская область</option><option>Краснодарский край</option><option>Другой регион</option></select></div>
+     <div class="field"><label for="age">Возраст</label><input id="age" type="number" min="13" max="100" inputmode="numeric" placeholder="Например, 19"></div>
+     <div class="field"><label for="status">Твой статус</label><select id="status"><option value="any">Выбери статус</option><option>Школьник</option><option>Студент</option><option>Выпускник</option><option>Молодой специалист</option><option>Ищу работу</option><option>Другое</option></select></div>
+     <div class="field"><label for="education">Уровень образования</label><select id="education"><option value="any">Не имеет значения</option><option>Основное общее</option><option>Среднее общее</option><option>Среднее профессиональное</option><option>Неоконченное высшее</option><option>Высшее</option></select></div><div class="field"><label for="format">Формат участия</label><select id="format"><option value="any">Любой формат</option><option value="online">Только онлайн</option><option value="offline">Допускаю очное участие</option></select></div><div class="field"><label for="subject">Предмет или направление</label><input id="subject" type="search" placeholder="Например, история, экономика, программирование"></div>
+     <div class="field interests"><label>Что тебе интересно? Можно выбрать несколько направлений</label><div class="check-grid" id="interestChecks">
+      <label class="check-chip"><input type="checkbox" value="Образование"> Образование</label><label class="check-chip"><input type="checkbox" value="Олимпиады и конкурсы"> Олимпиады и конкурсы</label><label class="check-chip"><input type="checkbox" value="Стажировки"> Стажировки</label><label class="check-chip"><input type="checkbox" value="Гранты"> Гранты</label><label class="check-chip"><input type="checkbox" value="Волонтёрство"> Волонтёрство</label><label class="check-chip"><input type="checkbox" value="Карьерные программы"> Карьера</label><label class="check-chip"><input type="checkbox" value="Научные проекты"> Наука</label><label class="check-chip"><input type="checkbox" value="Творческие проекты"> Творчество</label>
+     </div></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Найти возможности →</button></div><p id="matchMessage" class="form-help" aria-live="polite"></p>
+   </form>
+  </div>
+ </section>
+ <section class="container">
+  <div class="section-head"><div><div class="kicker">Исследуй направления</div><h2>Возможности для твоего роста</h2><p class="section-sub">Выбери направление — и посмотри, какие форматы развития можно найти.</p></div></div>
+  <div class="category-grid" id="homeCategories"></div>
+ </section>
+ <section style="background:#f0f1fb"><div class="container">
+  <div class="section-head"><div><div class="kicker">Просто начать</div><h2>Как это работает</h2><p class="section-sub">Три шага от интереса к следующей возможности.</p></div></div>
+  <div class="steps"><article class="step"><div class="step-num">01</div><h3>Расскажи о себе</h3><p>Укажи возраст, регион, статус и направления, которые тебе интересны.</p></article><article class="step"><div class="step-num">02</div><h3>Получи подборку</h3><p>Посмотри варианты, подходящие под твои параметры, и сравни условия участия.</p></article><article class="step"><div class="step-num">03</div><h3>Сделай следующий шаг</h3><p>Сохрани интересные программы, проверь требования и перейди к организатору.</p></article></div>
+ </div></section>
+ <section class="container">
+  <div class="section-head"><div><div class="kicker">Почему это важно</div><h2>Возможности не должны зависеть от адреса</h2><p class="section-sub">Мы хотим сделать поиск образовательных и профессиональных возможностей понятнее и доступнее.</p></div></div>
+  <div class="why-grid"><article class="why"><div class="why-icon">📍</div><h3>Учитываем регион</h3><p>Помогаем увидеть онлайн-форматы и программы, доступные участникам из разных регионов.</p></article><article class="why"><div class="why-icon">🧩</div><h3>Объясняем условия</h3><p>Собираем ключевые требования, возраст, формат и документы в одной карточке.</p></article><article class="why"><div class="why-icon">⏰</div><h3>Помогаем планировать</h3><p>Сохраняй интересные варианты и следи за указанными в карточках сроками.</p></article></div>
+ </section>
+ <section class="container"><div class="cta"><div><h2 style="margin:0;color:white">Твой следующий шаг может быть ближе, чем кажется</h2><p>Начни с поиска — и открой новые маршруты развития.</p></div><button class="btn" onclick="document.getElementById('profileForm').scrollIntoView({behavior:'smooth'})">Найти возможность →</button></div></section>
+</div>
+
+<div class="page active" id="page-catalog"><div class="container" id="catalogSection">
+ <div class="page-title"><div class="kicker">Исследуй и выбирай</div><h1>Каталог возможностей</h1><p>Реальные проекты и платформы. Статус набора и требования проверяйте в официальном источнике.</p></div>
+ <div class="toolbar">
+  <input class="search-field" id="searchInput" type="search" placeholder="Поиск по названию, описанию или организатору…" aria-label="Поиск">
+  <input id="filterSubject" type="search" placeholder="Предмет / направление: история, экономика…" aria-label="Предмет или направление">
+  <select id="filterDirection" aria-label="Категория"><option value="">Все категории</option></select>
+  <select id="filterRegion" aria-label="Регион"><option value="">Все регионы</option></select>
+  <select id="filterFormat" aria-label="Формат"><option value="">Любой формат</option><option value="Онлайн">Онлайн</option><option value="Офлайн">Офлайн</option><option value="Смешанный">Смешанный</option></select>
+  <select id="filterAge" aria-label="Возраст"><option value="">Любой возраст</option><option value="14-17">14–17 лет</option><option value="18-21">18–21 год</option><option value="22-25">22–25 лет</option><option value="26-30">26–30 лет</option><option value="31-35">31–35 лет</option></select>
+  <select id="filterEducation" aria-label="Статус"><option value="">Любой статус</option><option>Школьник</option><option>Студент</option><option>Выпускник</option><option>Молодой специалист</option></select>
+  <select id="filterLevel" aria-label="Уровень образования"><option value="">Любой уровень образования</option><option>Основное общее</option><option>Среднее общее</option><option>Среднее профессиональное</option><option>Неоконченное высшее</option><option>Высшее</option></select>
+  <select id="filterSupport" aria-label="Финансовые условия"><option value="">Финансовые условия</option><option value="yes">Есть финансовая поддержка</option><option value="free">Бесплатно</option></select>
+  <select id="filterStatus" aria-label="Статус набора"><option value="">Любой статус набора</option><option>Приём заявок открыт</option><option>Скоро старт</option><option>Приём заявок завершён</option><option>Набор проводится регулярно</option><option>Срок уточняется</option></select>
+  <select id="filterOnline" aria-label="Онлайн-участие"><option value="">Любой формат доступа</option><option value="yes">Можно онлайн</option><option value="no">Требуется очное участие</option></select>
+  <select id="filterTeam" aria-label="Формат команды"><option value="">Любой формат участия</option><option value="individual">Можно одному</option><option value="team">Нужна команда</option></select>
+  <select id="filterAudience" aria-label="Аудитория"><option value="">Любая аудитория</option><option value="Школьник">Для школьников</option><option value="Студент">Для студентов</option></select>
+  <select id="sortDeadline" aria-label="Сортировка"><option value="soon">Сначала ближайший известный срок</option><option value="late">Сначала поздний известный срок</option><option value="title">По названию</option><option value="match">По совпадению</option></select>
+ </div>
+ <h2 id="resultsTitle" class="sr-only">Все возможности</h2><p id="emptyMessage" hidden></p><div class="results-meta"><span id="resultsCount" aria-live="polite">Найдено: 0</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="back" style="margin:0" onclick="resetFilters()">Сбросить фильтры ↺</button><button class="back" style="margin:0" onclick="exportCSV()">Экспорт CSV ↓</button></div></div>
+ <div class="cards" id="catalog"></div>
+ <div class="notice">⚠ Информация носит справочный характер. Дата проверки карточки не означает, что набор открыт: сроки, возрастные ограничения, стоимость и документы могут меняться. Перед подачей заявки обязательно откройте официальный источник.</div>
+</div></div>
+
+<div class="page" id="page-detail"><div class="container detail-wrap"><button class="back" onclick="goBack()">← Вернуться к результатам</button><div id="detailContent"></div></div></div>
+
+<div class="page" id="page-saved"><div class="container">
+ <div class="page-title"><div class="kicker">Твоя подборка</div><h1>Мои возможности</h1><p>Сохраняй интересные программы и возвращайся к ним, когда будешь готов(а).</p></div>
+ <div class="profile-grid">
+  <div class="panel"><h3>♡ Сохранённые программы</h3><div class="mini-list" id="savedList"></div></div>
+  <div class="panel"><h3>⏰ Ближайшие дедлайны</h3><div class="mini-list" id="deadlineList"></div></div>
+  <div class="panel"><h3>👀 Недавно просмотренные</h3><div class="mini-list" id="viewedList"></div></div>
+  <div class="panel"><h3>✨ Твои рекомендации</h3><p style="font-size:13px;color:var(--muted)">Подборка формируется на основе параметров поиска. Пройди анкету на главной странице, чтобы увидеть подходящие варианты.</p><button class="btn btn-primary" onclick="showPage('home');document.getElementById('profileForm').scrollIntoView({behavior:'smooth'})">Настроить подбор</button></div>
+ </div>
+</div></div>
+
+<div class="page" id="page-about"><div class="container">
+ <div class="page-title"><div class="kicker">Наша идея</div><h1>О проекте «Равный старт»</h1><p>Возможности должны быть доступны каждому — независимо от места проживания и стартовых условий.</p></div>
+ <div class="about-grid">
+  <div class="about-box"><div class="kicker">Проблема</div><h2 style="font-size:25px">Неравный доступ начинается с неравного доступа к информации</h2><p>Образовательные программы, конкурсы, стажировки и меры поддержки публикуются на разных площадках. Молодому человеку бывает трудно узнать о них, разобраться в критериях отбора и понять, подходит ли ему конкретная возможность.</p><p>Территориальные ограничения, недостаток информационной поддержки и сложные описания условий могут снижать шансы на участие.</p></div>
+  <div class="about-box"><div class="kicker">Решение</div><h2 style="font-size:25px">Один понятный маршрут к новым возможностям</h2><p>«Равный старт» объединяет возможности в тематический каталог и помогает ориентироваться в них с учётом возраста, региона, статуса и интересов пользователя.</p><p>Сервис не гарантирует получение гранта или места на программе, но сокращает путь от поиска информации до понимания следующих шагов.</p><div class="stat-row"><div class="stat"><strong>30</strong><small>карточек каталога</small></div><div class="stat"><strong>1</strong><small>точка поиска</small></div><div class="stat"><strong>∞</strong><small>траекторий роста</small></div></div></div>
+ </div>
+ <section style="padding-bottom:0"><div class="kicker">Чем мы отличаемся</div><h2>Не просто список ссылок</h2><div class="why-grid"><article class="why"><div class="why-icon">🎯</div><h3>Персонализация</h3><p>Подбор по возрасту, статусу, интересам и региону.</p></article><article class="why"><div class="why-icon">🗂️</div><h3>Понятные условия</h3><p>Требования и документы собраны в структурированной карточке.</p></article><article class="why"><div class="why-icon">🌐</div><h3>Онлайн-доступ</h3><p>Отдельное внимание возможностям, в которых можно участвовать дистанционно.</p></article></div></section>
+ <section id="sourcesSection" style="padding:30px 0 0"><div class="kicker">Прозрачность данных</div><h2>Источники информации</h2><p class="section-sub">Каждая карточка ведёт на официальный сайт организатора или проекта. Дата последней ручной проверки каталога: 14 ноября 2026 года.</p><div id="sourceList" class="mini-list" style="margin-top:18px"></div></section>
+ <section style="padding:25px 0 0"><div class="kicker">Не включено в каталог без подтверждения</div><h2>Кандидаты на дополнительную проверку</h2><p class="section-sub">Эти названия проверялись как поисковые ориентиры. Пока не найдена достаточная официальная информация о конкретной действующей возможности для молодёжи, поэтому карточки не создаются.</p><div class="mini-list" id="unverifiedList"></div></section>
+ <div class="notice" style="margin-top:28px">Каталог собирает ссылки на реальные программы и официальные площадки. Он не подключён к API организаторов и не обновляется автоматически. Условия и сроки могут изменяться.</div>
+</div></div>
+</main>
+<footer><div class="container footer-row"><span>© 2026 «Равный старт» · Учебный MVP</span><span>Возможности должны быть доступны каждому</span><span>Демонстрационные данные · Не являются офертой</span></div></footer>
+<div class="modal-backdrop" id="detailsModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal-panel"><button class="modal-close" id="closeModal" type="button" aria-label="Закрыть">×</button><div id="detailsContent"></div></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+window.OPPORTUNITIES = [
+  {
+    "id": 1,
+    "key": "bolshaya",
+    "title": "Большая перемена",
+    "category": "Конкурсы и проектные программы",
+    "organizer": "АНО «Россия — страна возможностей» и партнёры",
+    "officialUrl": "https://rsv.ru/competitions/project/1/2e32412c-e54e-4325-8750-2c04c8c8b14d/",
+    "sourceUrl": "https://rsv.ru/competitions/project/1/2e32412c-e54e-4325-8750-2c04c8c8b14d/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Дистанционные этапы; финал — очно",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники 1–10 классов и студенты СПО (по правилам сезона)",
+    "education": [
+      "Школьник",
+      "Студент"
+    ],
+    "interests": [
+      "Олимпиады и конкурсы"
+    ],
+    "participationCost": "Бесплатность и призы — по положению сезона",
+    "financialSupport": false,
+    "deadline": "Приём заявок 7-го сезона завершён; даты следующего сезона не объявлены",
+    "status": "Приём заявок завершён",
+    "documents": "Конкурсная заявка; дополнительные материалы — по заданию сезона.",
+    "description": "Конкурс развивает проектное мышление и предлагает задания по разным направлениям.",
+    "eligibility": "Школьники 1–10 классов и студенты СПО (по правилам сезона)",
+    "accessibility": "Дистанционные этапы; финал — очно",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница платформы подтверждает конкурс и аудиторию; следующий сезон на дату проверки не объявлен",
+    "demo": false,
+    "subjects": [
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 2,
+    "key": "nto-senior",
+    "title": "Национальная технологическая олимпиада — старший трек",
+    "category": "Олимпиады",
+    "organizer": "АНО «Россия — страна возможностей» и Кружковое движение НТИ",
+    "officialUrl": "https://ntcontest.ru/",
+    "sourceUrl": "https://edu.gov.ru/press/11976/dmitriy-chernyshenko-v-ramkah-nacproekta-molodezh-i-deti-otkryvaetsya-12-y-sezon-nacionalnoy-tehnologicheskoy-olimpiady/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Отборочные этапы онлайн; финал по профилю",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Ученики 8–11 классов и студенты СПО в рамках правил сезона",
+    "education": [
+      "Школьник",
+      "Студент"
+    ],
+    "interests": [
+      "Олимпиады и конкурсы"
+    ],
+    "participationCost": "Участие бесплатное; расходы финалистов — по правилам сезона",
+    "financialSupport": false,
+    "deadline": "Сроки различаются по профилям; проверяйте расписание",
+    "status": "Срок уточняется",
+    "documents": "Регистрация и согласия — по правилам трека.",
+    "description": "Командные инженерные соревнования по технологическим профилям.",
+    "eligibility": "Ученики 8–11 классов и студенты СПО в рамках правил сезона",
+    "accessibility": "Отборочные этапы онлайн; финал по профилю",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Открытие 12-го сезона и категории участников подтверждены сообщением Минпросвещения; сроки — по профилю",
+    "demo": false,
+    "subjects": [
+      "информатика",
+      "программирование",
+      "инженерия",
+      "математика"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 3,
+    "key": "nto-junior",
+    "title": "Национальная технологическая олимпиада — НТО Юниоры",
+    "category": "Олимпиады",
+    "organizer": "АНО «Россия — страна возможностей» и Кружковое движение НТИ",
+    "officialUrl": "https://ntcontest.ru/",
+    "sourceUrl": "https://edu.gov.ru/press/11976/dmitriy-chernyshenko-v-ramkah-nacproekta-molodezh-i-deti-otkryvaetsya-12-y-sezon-nacionalnoy-tehnologicheskoy-olimpiady/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Отборочные этапы онлайн; финал по правилам профиля",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Ученики 5–7 классов",
+    "education": [
+      "Школьник"
+    ],
+    "interests": [
+      "Олимпиады и конкурсы"
+    ],
+    "participationCost": "Участие бесплатное; условия финала уточняются",
+    "financialSupport": false,
+    "deadline": "Сроки различаются по направлениям",
+    "status": "Срок уточняется",
+    "documents": "Регистрация и документы — по положению.",
+    "description": "Младший трек НТО для знакомства с инженерными и технологическими задачами.",
+    "eligibility": "Ученики 5–7 классов",
+    "accessibility": "Отборочные этапы онлайн; финал по правилам профиля",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "информатика",
+      "программирование",
+      "инженерия",
+      "математика"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 4,
+    "key": "nto-student",
+    "title": "Национальная технологическая олимпиада — студенческий трек",
+    "category": "Олимпиады",
+    "organizer": "АНО «Россия — страна возможностей» и Кружковое движение НТИ",
+    "officialUrl": "https://ntcontest.ru/",
+    "sourceUrl": "https://ru.education/nto/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн-отбор; формат финала зависит от профиля",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Студенты вузов; точные курсы и требования — по профилю",
+    "education": [
+      "Студент"
+    ],
+    "interests": [
+      "Олимпиады и конкурсы"
+    ],
+    "participationCost": "Участие бесплатное; поддержка финалистов — по правилам сезона",
+    "financialSupport": false,
+    "deadline": "Профильные сроки регистрации",
+    "status": "Срок уточняется",
+    "documents": "Регистрация, сведения об обучении и документы — по профилю.",
+    "description": "Студенческие технологические соревнования по прикладным направлениям.",
+    "eligibility": "Студенты вузов; точные курсы и требования — по профилю",
+    "accessibility": "Онлайн-отбор; формат финала зависит от профиля",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "информатика",
+      "программирование",
+      "инженерия",
+      "математика"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 5,
+    "key": "vos",
+    "title": "Всероссийская олимпиада школьников",
+    "category": "Олимпиады",
+    "organizer": "Министерство просвещения РФ; региональные и муниципальные организаторы",
+    "officialUrl": "https://vserosolimp.edsoo.ru/",
+    "sourceUrl": "https://vserosolimp.edsoo.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Школьный и муниципальный этапы организуются по месту обучения; часть этапов на платформе",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники; классы допуска зависят от предмета и этапа",
+    "education": [
+      "Школьник"
+    ],
+    "interests": [
+      "Олимпиады и конкурсы"
+    ],
+    "participationCost": "Бесплатно в рамках установленного порядка",
+    "financialSupport": false,
+    "deadline": "График 2026/27 публикуется по предметам и регионам",
+    "status": "Срок уточняется",
+    "documents": "Обычно регистрация через школу; уточнить у школьного координатора.",
+    "description": "Система предметных олимпиад по общеобразовательным дисциплинам.",
+    "eligibility": "Школьники; классы допуска зависят от предмета и этапа",
+    "accessibility": "Школьный и муниципальный этапы организуются по месту обучения; часть этапов на платформе",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "история",
+      "математика",
+      "информатика",
+      "экономика",
+      "обществознание"
+    ],
+    "educationLevels": [],
+    "participationMode": "individual",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 6,
+    "key": "rosmol-grants",
+    "title": "Росмолодёжь.Гранты",
+    "category": "Гранты и инициативные проекты",
+    "organizer": "Федеральное агентство по делам молодёжи",
+    "officialUrl": "https://fadm.gov.ru/",
+    "sourceUrl": "https://bspu.ru/news/43607",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Заочная подача заявки; защита и реализация — по конкурсу",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Для отдельных конкурсов — молодые граждане 14–35 лет; проверить положение текущего конкурса",
+    "education": [],
+    "interests": [
+      "Гранты"
+    ],
+    "participationCost": "Грантовая поддержка возможна для победителей; участие в конкурсе бесплатно",
+    "financialSupport": true,
+    "deadline": "Конкурс 2026 года завершён; новый набор уточняется",
+    "status": "Приём заявок завершён",
+    "documents": "Заявка, описание проекта, календарный план и смета — состав по положению.",
+    "description": "Конкурсная поддержка молодёжных инициатив и проектов.",
+    "eligibility": "Для отдельных конкурсов — молодые граждане 14–35 лет; проверить положение текущего конкурса",
+    "accessibility": "Заочная подача заявки; защита и реализация — по конкурсу",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Информация о конкурсе и сезоне 2026 подтверждается публикацией со ссылкой на объявление Росмолодёжи; положение нового сезона проверить отдельно",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 7,
+    "key": "tvoyhod-do",
+    "title": "Всероссийский студенческий конкурс «Твой Ход» — трек «Делаю»",
+    "category": "Гранты и инициативные проекты",
+    "organizer": "Проект «Твой Ход», Российский Союз Молодёжи",
+    "officialUrl": "https://tvoyhod.online/contests",
+    "sourceUrl": "https://tvoyhod.online/contests",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Проектная работа; этапы на платформе",
+    "ageMin": 14,
+    "ageMax": 35,
+    "ageLabel": "Участники 14–35 лет; конкретный трек — по положению",
+    "education": [
+      "Студент"
+    ],
+    "interests": [
+      "Гранты"
+    ],
+    "participationCost": "В треке предусмотрены премии победителям по условиям сезона",
+    "financialSupport": true,
+    "deadline": "Сезон 2026 проходит в течение года; статус набора проверять в личном кабинете",
+    "status": "Срок уточняется",
+    "documents": "Заявка и проектные материалы — по регламенту трека.",
+    "description": "Трек для студенческих команд и авторов социально значимых проектов.",
+    "eligibility": "Студенты СПО и вузов; условия 2026 года опубликованы в положении",
+    "accessibility": "Проектная работа; этапы на платформе",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Возраст 14–35 лет подтверждён FAQ проекта; конкретные треки и критерии сверять с положением",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 8,
+    "key": "tvoyhod-op",
+    "title": "Всероссийский студенческий конкурс «Твой Ход» — трек «Определяю»",
+    "category": "Гранты и инициативные проекты",
+    "organizer": "Проект «Твой Ход», Российский Союз Молодёжи",
+    "officialUrl": "https://tvoyhod.online/contests",
+    "sourceUrl": "https://tvoyhod.online/contests",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн-активности и исследовательские задания",
+    "ageMin": 14,
+    "ageMax": 35,
+    "ageLabel": "Участники 14–35 лет; конкретный трек — по положению",
+    "education": [
+      "Студент"
+    ],
+    "interests": [
+      "Гранты"
+    ],
+    "participationCost": "Призы и поддержка — по положению сезона",
+    "financialSupport": false,
+    "deadline": "Сезонные сроки; актуальный статус уточняется",
+    "status": "Срок уточняется",
+    "documents": "Регистрация и выполнение заданий — на платформе проекта.",
+    "description": "Трек, связанный с исследованием проблем студенческой среды и представлением результатов.",
+    "eligibility": "Студенты; точные требования — по положению сезона",
+    "accessibility": "Онлайн-активности и исследовательские задания",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Возраст 14–35 лет подтверждён FAQ проекта; конкретные треки и критерии сверять с положением",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 9,
+    "key": "first-primary",
+    "title": "Конкурс первичных отделений Движения Первых",
+    "category": "Гранты и инициативные проекты",
+    "organizer": "Движение Первых",
+    "officialUrl": "https://будьвдвижении.рф/",
+    "sourceUrl": "https://будьвдвижении.рф/news/ot-idei-do-milliona-startoval-novyj-sezon-konkursa-pervichek-dvizheniya-pervyh/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Командный; работа в течение учебного года",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Команды действующих первичных отделений; заявку подаёт куратор",
+    "education": [],
+    "interests": [
+      "Гранты"
+    ],
+    "participationCost": "Для победителей предусмотрены премии организациям по правилам сезона",
+    "financialSupport": true,
+    "deadline": "Заявочный этап 4-го сезона завершался 11.11.2026; дальнейшие сезоны уточнять",
+    "status": "Приём заявок завершён",
+    "documents": "Командная заявка куратора; документы — по положению конкурса.",
+    "description": "Конкурс поддерживает инициативы первичных отделений и развитие молодёжных пространств.",
+    "eligibility": "Команды действующих первичных отделений; заявку подаёт куратор",
+    "accessibility": "Командный; работа в течение учебного года",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Сезон 2026 и завершение приёма 11.11.2026 подтверждены официальной новостью",
+    "demo": false,
+    "deadlineDate": "2026-11-11",
+    "subjects": [
+      "предпринимательство",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 10,
+    "key": "president-grants",
+    "title": "Фонд президентских грантов — поддержанные проекты НКО",
+    "category": "Гранты и инициативные проекты",
+    "organizer": "Фонд президентских грантов",
+    "officialUrl": "https://президентскиегранты.рф/",
+    "sourceUrl": "https://президентскиегранты.рф/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Зависит от проекта НКО; онлайн и офлайн",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Прямой конкурс предназначен для НКО; молодёжь может искать проекты и организации для участия",
+    "education": [],
+    "interests": [
+      "Гранты"
+    ],
+    "participationCost": "Грантовые средства получает организация-победитель, не отдельный волонтёр",
+    "financialSupport": false,
+    "deadline": "Конкурсы НКО проводятся по объявленным циклам",
+    "status": "Срок уточняется",
+    "documents": "Для участия в конкретном проекте документы уточняются у НКО.",
+    "description": "Каталог поддержанных общественных проектов, в которых можно искать возможности для участия.",
+    "eligibility": "Прямой конкурс предназначен для НКО; молодёжь может искать проекты и организации для участия",
+    "accessibility": "Зависит от проекта НКО; онлайн и офлайн",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "информатика",
+      "программирование",
+      "инженерия",
+      "математика"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 11,
+    "key": "sirius-programs",
+    "title": "Образовательные программы Образовательного центра «Сириус»",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Образовательный фонд «Талант и успех»",
+    "officialUrl": "https://sochisirius.ru/",
+    "sourceUrl": "https://sochisirius.ru/registration",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Очные профильные программы в Сириусе; отбор может включать дистанционные этапы",
+    "ageMin": 10,
+    "ageMax": 17,
+    "ageLabel": "Школьники 10–17 лет (по образовательным программам)",
+    "education": [
+      "Школьник"
+    ],
+    "interests": [
+      "Образование"
+    ],
+    "participationCost": "Обучение на профильных программах бесплатное; проезд уточнять",
+    "financialSupport": false,
+    "deadline": "Отбор проводится по календарю отдельных программ",
+    "status": "Срок уточняется",
+    "documents": "Портфолио, достижения и конкурсные задания — по конкретной программе.",
+    "description": "Научные, творческие и спортивные профильные программы для школьников.",
+    "eligibility": "Школьники; возраст и отбор зависят от программы",
+    "accessibility": "Очные профильные программы в Сириусе; отбор может включать дистанционные этапы",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Возраст 10–17 лет подтверждён сведениями образовательной организации; отбор и направления — по программе",
+    "demo": false,
+    "subjects": [
+      "математика",
+      "информатика",
+      "программирование",
+      "физика",
+      "химия",
+      "биология"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 12,
+    "key": "sirius-courses",
+    "title": "Курсы и дистанционные образовательные программы «Сириус»",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Образовательный фонд «Талант и успех»",
+    "officialUrl": "https://edu.sirius.online/",
+    "sourceUrl": "https://edu.sirius.online/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возраст и уровень зависят от курса",
+    "education": [],
+    "interests": [
+      "Образование"
+    ],
+    "participationCost": "Условия оплаты/бесплатности смотреть на странице конкретного курса",
+    "financialSupport": false,
+    "deadline": "Регистрация на курсы зависит от расписания платформы",
+    "status": "Набор проводится регулярно",
+    "documents": "Регистрация на платформе; дополнительные документы обычно зависят от курса.",
+    "description": "Дистанционные курсы и учебные материалы по предметным и технологическим направлениям.",
+    "eligibility": "Возраст и уровень зависят от курса",
+    "accessibility": "Онлайн",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "математика",
+      "информатика",
+      "программирование",
+      "физика",
+      "химия",
+      "биология"
+    ],
+    "educationLevels": [],
+    "participationMode": "individual",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 13,
+    "key": "tavrida-education",
+    "title": "Образовательные заезды «Таврида.АРТ»",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Арт-кластер «Таврида» / Росмолодёжь",
+    "officialUrl": "https://tavrida.art/",
+    "sourceUrl": "https://tavrida.art/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Очно; место и условия проживания — в объявлении заезда",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Молодые деятели культуры и искусства; возраст и критерии — по заезду",
+    "education": [],
+    "interests": [
+      "Образование"
+    ],
+    "participationCost": "Стоимость, грантовая поддержка и компенсации — по условиям заезда",
+    "financialSupport": false,
+    "deadline": "Заезды объявляются отдельными наборами",
+    "status": "Срок уточняется",
+    "documents": "Заявка, портфолио или творческое задание — если предусмотрено заездом.",
+    "description": "Образовательные программы для молодых авторов и специалистов творческих индустрий.",
+    "eligibility": "Молодые деятели культуры и искусства; возраст и критерии — по заезду",
+    "accessibility": "Очно; место и условия проживания — в объявлении заезда",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "творчество",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 14,
+    "key": "mashuk",
+    "title": "Всероссийский молодёжный образовательный форум «Машук»",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Росмолодёжь и организаторы форума",
+    "officialUrl": "https://events.myrosmol.ru/",
+    "sourceUrl": "https://events.myrosmol.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Очно",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Молодёжь; точные возрастные рамки — в положении конкретного года",
+    "education": [],
+    "interests": [
+      "Образование"
+    ],
+    "participationCost": "Условия участия, проживания и проезда публикуются организаторами",
+    "financialSupport": false,
+    "deadline": "Форум проводится сезонами; набор 2026/следующего сезона уточняется",
+    "status": "Срок уточняется",
+    "documents": "Анкета и мотивационные ответы — по форме регистрации.",
+    "description": "Образовательная площадка и форум для молодых педагогов, наставников и активной молодёжи.",
+    "eligibility": "Молодёжь; точные возрастные рамки — в положении конкретного года",
+    "accessibility": "Очно",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная платформа Росмолодёжь.Форумы; карточки смен и наборов обновляются по сезонам",
+    "demo": false,
+    "subjects": [
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 15,
+    "key": "territory-meanings",
+    "title": "Всероссийский молодёжный форум «Территория смыслов»",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Росмолодёжь",
+    "officialUrl": "https://events.myrosmol.ru/",
+    "sourceUrl": "https://events.myrosmol.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Очно",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Молодёжь; возраст и квоты — по смене",
+    "education": [],
+    "interests": [
+      "Образование"
+    ],
+    "participationCost": "Условия проживания и проезда проверять в правилах участия",
+    "financialSupport": false,
+    "deadline": "Смены и регистрация объявляются ежегодно",
+    "status": "Срок уточняется",
+    "documents": "Анкета участника и конкурсный отбор — по правилам сезона.",
+    "description": "Форумные смены по общественным, управленческим и профессиональным темам.",
+    "eligibility": "Молодёжь; возраст и квоты — по смене",
+    "accessibility": "Очно",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная платформа Росмолодёжь.Форумы; карточки смен и наборов обновляются по сезонам",
+    "demo": false,
+    "subjects": [
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 16,
+    "key": "rsv-career",
+    "title": "Карьерный центр «Россия — страна возможностей»",
+    "category": "Стажировки и карьера",
+    "organizer": "Президентская платформа «Россия — страна возможностей»",
+    "officialUrl": "https://career.rsv.ru/",
+    "sourceUrl": "https://career.rsv.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Вакансии и стажировки: формат зависит от позиции",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования к возрасту и опыту указаны в каждой вакансии",
+    "education": [],
+    "interests": [
+      "Стажировки и карьера"
+    ],
+    "participationCost": "Оплата и условия — в конкретном объявлении",
+    "financialSupport": false,
+    "deadline": "Вакансии обновляются на платформе",
+    "status": "Набор проводится регулярно",
+    "documents": "Резюме и документы — по требованиям вакансии.",
+    "description": "Площадка с вакансиями, стажировками и стартом карьеры в организации.",
+    "eligibility": "Требования к возрасту и опыту указаны в каждой вакансии",
+    "accessibility": "Вакансии и стажировки: формат зависит от позиции",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "экономика",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 17,
+    "key": "tvoyhod-career",
+    "title": "Карьерный центр проекта «Твой Ход»",
+    "category": "Стажировки и карьера",
+    "organizer": "Проект «Твой Ход», Российский Союз Молодёжи",
+    "officialUrl": "https://tvoyhod.online/career",
+    "sourceUrl": "https://tvoyhod.online/career",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Вакансии и стажировки; формат зависит от предложения",
+    "ageMin": 18,
+    "ageMax": 35,
+    "ageLabel": "Студенты и выпускники 18–35 лет — по условиям карьерного центра",
+    "education": [
+      "Студент",
+      "Выпускник"
+    ],
+    "interests": [
+      "Стажировки и карьера"
+    ],
+    "participationCost": "Оплата указана в карточке конкретной позиции",
+    "financialSupport": false,
+    "deadline": "Предложения публикуются по мере поступления",
+    "status": "Набор проводится регулярно",
+    "documents": "Резюме и отклик через карьерный центр.",
+    "description": "Раздел стажировок, учебных практик и вакансий для студентов и выпускников.",
+    "eligibility": "Студенты и выпускники 18–35 лет — по условиям карьерного центра",
+    "accessibility": "Вакансии и стажировки; формат зависит от предложения",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Возраст 18–35 лет подтверждён FAQ/страницей карьерного центра; текущие вакансии меняются",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 18,
+    "key": "ya-professional",
+    "title": "Всероссийская олимпиада студентов «Я — профессионал»",
+    "category": "Стажировки и карьера",
+    "organizer": "АНО «Россия — страна возможностей» и вузы-организаторы",
+    "officialUrl": "https://yandex.ru/profi/",
+    "sourceUrl": "https://yandex.ru/profi/rules/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Отборочные этапы преимущественно онлайн; финалы по направлению",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Студенты вузов; направления и курсы допуска — по регламенту сезона",
+    "education": [
+      "Студент"
+    ],
+    "interests": [
+      "Стажировки и карьера"
+    ],
+    "participationCost": "Участие бесплатно; стажировки и льготы — для победителей по правилам",
+    "financialSupport": false,
+    "deadline": "Регистрация завершилась 10 ноября 2026; отборочный этап проходит 13–29 ноября 2026",
+    "status": "Приём заявок завершён",
+    "documents": "Подтверждение статуса студента; задания и документы — по направлению.",
+    "description": "Олимпиада помогает студентам проверить профессиональные знания и получить карьерные возможности.",
+    "eligibility": "Студенты вузов; направления и курсы допуска — по регламенту сезона",
+    "accessibility": "Отборочные этапы преимущественно онлайн; финалы по направлению",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница подтверждает календарь X сезона 2026/27 и студенческую аудиторию; регистрация закрылась 10.11.2026",
+    "demo": false,
+    "deadlineDate": "2026-11-29",
+    "subjects": [
+      "информатика",
+      "программирование",
+      "инженерия",
+      "математика"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 19,
+    "key": "flagmany",
+    "title": "Проект «Флагманы образования»",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Президентская платформа «Россия — страна возможностей»",
+    "officialUrl": "https://flagmany.rsv.ru/",
+    "sourceUrl": "https://flagmany.rsv.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн и очно в зависимости от трека",
+    "ageMin": 14,
+    "ageMax": null,
+    "ageLabel": "От 14 лет; категория и критерии зависят от направления",
+    "education": [
+      "Студент"
+    ],
+    "interests": [
+      "Стажировки и карьера"
+    ],
+    "participationCost": "Условия участия и призы — по положению",
+    "financialSupport": false,
+    "deadline": "Набор зависит от конкретного конкурса/трека",
+    "status": "Срок уточняется",
+    "documents": "Регистрация и подтверждение статуса — по выбранному треку.",
+    "description": "Конкурсы и образовательные возможности в сфере образования и педагогического развития.",
+    "eligibility": "Педагоги, управленцы и студенты педагогических направлений — по проекту",
+    "accessibility": "Онлайн и очно в зависимости от трека",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница проекта подтверждает аудиторию от 14/18 лет в зависимости от направления и активности 2026 года",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "экономика",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 20,
+    "key": "leaders-russia",
+    "title": "Конкурс управленцев «Лидеры России»",
+    "category": "Стажировки и карьера",
+    "organizer": "АНО «Россия — страна возможностей»",
+    "officialUrl": "https://лидерыроссии.рф/",
+    "sourceUrl": "https://лидерыроссии.рф/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Дистанционные испытания и очные этапы",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возраст, управленческий опыт и другие критерии — по положению сезона",
+    "education": [],
+    "interests": [
+      "Стажировки и карьера"
+    ],
+    "participationCost": "Участие в конкурсе бесплатно; расходы на очные этапы уточнять",
+    "financialSupport": false,
+    "deadline": "Проведение и набор зависят от сезона",
+    "status": "Срок уточняется",
+    "documents": "Анкета и подтверждение опыта — по положению.",
+    "description": "Конкурс для выявления и развития управленческого потенциала.",
+    "eligibility": "Возраст, управленческий опыт и другие критерии — по положению сезона",
+    "accessibility": "Дистанционные испытания и очные этапы",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "предпринимательство",
+      "экономика",
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 21,
+    "key": "dobro",
+    "title": "Добро.рф — каталог волонтёрских возможностей",
+    "category": "Волонтёрство",
+    "organizer": "Ассоциация волонтёрских центров / платформа Добро.рф",
+    "officialUrl": "https://dobro.ru/",
+    "sourceUrl": "https://dobro.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн и офлайн",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возраст и требования определяются каждой волонтёрской вакансией",
+    "education": [],
+    "interests": [
+      "Волонтёрство"
+    ],
+    "participationCost": "Как правило, участие добровольное; расходы уточнять у организатора",
+    "financialSupport": false,
+    "deadline": "Возможности и наборы обновляются организаторами",
+    "status": "Набор проводится регулярно",
+    "documents": "Регистрация на платформе; дополнительные документы — по вакансии.",
+    "description": "Поиск волонтёрских событий, организаций и проектов по регионам и интересам.",
+    "eligibility": "Возраст и требования определяются каждой волонтёрской вакансией",
+    "accessibility": "Онлайн и офлайн",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная платформа содержит события, онлайн-волонтёрство и проектные возможности; возраст указан в каждой вакансии отдельно",
+    "demo": false,
+    "subjects": [
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 22,
+    "key": "victory-volunteers",
+    "title": "Волонтёры Победы",
+    "category": "Волонтёрство",
+    "organizer": "Всероссийское общественное движение «Волонтёры Победы»",
+    "officialUrl": "https://волонтёрыпобеды.рф/",
+    "sourceUrl": "https://волонтёрыпобеды.рф/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "В основном офлайн; отдельные онлайн-активности",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возраст и допуск к отдельным задачам — по правилам движения и мероприятия",
+    "education": [],
+    "interests": [
+      "Волонтёрство"
+    ],
+    "participationCost": "Участие добровольное; расходы по мероприятию уточнять",
+    "financialSupport": false,
+    "deadline": "Вступление и мероприятия — по региональному отделению",
+    "status": "Набор проводится регулярно",
+    "documents": "Регистрация волонтёра; инструктаж и согласия — по возрасту и задаче.",
+    "description": "Волонтёрское движение, связанное с сохранением исторической памяти и организацией памятных событий.",
+    "eligibility": "Возраст и допуск к отдельным задачам — по правилам движения и мероприятия",
+    "accessibility": "В основном офлайн; отдельные онлайн-активности",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 23,
+    "key": "volmed",
+    "title": "Волонтёры-медики",
+    "category": "Волонтёрство",
+    "organizer": "Всероссийское общественное движение «Волонтёры-медики»",
+    "officialUrl": "https://волонтёры-медики.рф/",
+    "sourceUrl": "https://волонтёры-медики.рф/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Офлайн и онлайн-просвещение; зависит от проекта",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возраст, обучение и допуск зависят от направления и регионального отделения",
+    "education": [],
+    "interests": [
+      "Волонтёрство"
+    ],
+    "participationCost": "Условия участия и обучения уточнять в отделении",
+    "financialSupport": false,
+    "deadline": "Набор через региональные отделения и мероприятия",
+    "status": "Набор проводится регулярно",
+    "documents": "Анкета, обучение и допуск — по требованиям конкретного направления.",
+    "description": "Добровольческие и просветительские проекты в сфере общественного здоровья.",
+    "eligibility": "Возраст, обучение и допуск зависят от направления и регионального отделения",
+    "accessibility": "Офлайн и онлайн-просвещение; зависит от проекта",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница найдена; условия и текущий набор требуют проверки на странице конкретного сезона",
+    "demo": false,
+    "subjects": [
+      "социальные проекты"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 24,
+    "key": "big-challenges",
+    "title": "Конкурс научно-технологических проектов «Большие вызовы»",
+    "category": "Научные и технологические программы",
+    "organizer": "Образовательный фонд «Талант и успех»",
+    "officialUrl": "https://bigchallenges.ru/",
+    "sourceUrl": "https://sochisirius.ru/news/7533",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Заочный отбор и очные/дистанционные этапы по правилам сезона",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники; классы и направления — по положению конкурса",
+    "education": [
+      "Школьник"
+    ],
+    "interests": [
+      "Наука и технологии"
+    ],
+    "participationCost": "Условия участия и финала — по положению",
+    "financialSupport": false,
+    "deadline": "Сезонные сроки публикуются организатором",
+    "status": "Срок уточняется",
+    "documents": "Описание проекта, исследовательские материалы и согласия — по положению.",
+    "description": "Конкурс исследовательских и инженерных проектов по актуальным научно-технологическим направлениям.",
+    "eligibility": "Школьники; классы и направления — по положению конкурса",
+    "accessibility": "Заочный отбор и очные/дистанционные этапы по правилам сезона",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная новость Сириуса подтверждает конкурс и целевую аудиторию школьников; актуальный календарь сезона проверить отдельно",
+    "demo": false,
+    "subjects": [
+      "информатика",
+      "программирование",
+      "инженерия",
+      "математика"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 25,
+    "key": "sirius-olympiads",
+    "title": "Олимпиадные программы и курсы «Сириус»",
+    "category": "Научные и технологические программы",
+    "organizer": "Образовательный фонд «Талант и успех»",
+    "officialUrl": "https://siriusolymp.ru/",
+    "sourceUrl": "https://siriusolymp.ru/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Дистанционные этапы и платформенные задания",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники; предметы, классы и допуск зависят от олимпиады",
+    "education": [
+      "Школьник"
+    ],
+    "interests": [
+      "Наука и технологии"
+    ],
+    "participationCost": "Участие в олимпиадных этапах бесплатно",
+    "financialSupport": false,
+    "deadline": "Расписание публикуется по олимпиадам и предметам",
+    "status": "Срок уточняется",
+    "documents": "Регистрация и выполнение заданий — по правилам олимпиады.",
+    "description": "Платформа олимпиад и учебных материалов по ряду школьных предметов.",
+    "eligibility": "Школьники; предметы, классы и допуск зависят от олимпиады",
+    "accessibility": "Дистанционные этапы и платформенные задания",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная олимпиадная платформа; расписание и классы допуска публикуются отдельно по предметам",
+    "demo": false,
+    "subjects": [
+      "математика",
+      "информатика",
+      "программирование",
+      "физика",
+      "химия",
+      "биология"
+    ],
+    "educationLevels": [],
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 26,
+    "key": "odschool",
+    "title": "Онлайн-школа «Общее Дело» — подготовка к олимпиадам",
+    "category": "Онлайн-школы и подготовка",
+    "organizer": "Онлайн-школа «Общее Дело»",
+    "officialUrl": "https://www.odschool.ru/courses",
+    "sourceUrl": "https://www.odschool.ru/courses",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Полностью онлайн; занятия, записи и учебная платформа",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники; конкретные классы и допуск уточняются для каждого курса",
+    "education": [
+      "Школьник"
+    ],
+    "educationLevels": [],
+    "interests": [
+      "Образование",
+      "Олимпиады и конкурсы"
+    ],
+    "subjects": [
+      "история",
+      "обществознание",
+      "право",
+      "русский язык",
+      "литература",
+      "искусство"
+    ],
+    "participationCost": "Платно; опубликованные курсы от 4 490 ₽ в месяц",
+    "financialSupport": false,
+    "deadline": "Набор на зимние курсы с декабря 2026 года; даты различаются по предметам",
+    "status": "Скоро старт",
+    "documents": "Запись на курс; состав документов и порядок оплаты уточняются на странице конкретного курса.",
+    "description": "Онлайн-подготовка к ВсОШ и перечневым олимпиадам по обществознанию, праву, русскому языку, литературе, искусству (МХК) и истории. На сайте опубликованы зимние интенсивы, начинающиеся в декабре 2026 года.",
+    "eligibility": "Школьники; точные классы и требования зависят от курса.",
+    "accessibility": "Онлайн-занятия и материалы; заявлена доступность для участников из регионов.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Предметы, онлайн-формат, даты стартов и цены сверены с официальной страницей курсов 14.11.2026; возраст/классы проверять в карточке конкретного курса.",
+    "demo": false,
+    "participationMode": "individual",
+    "isCase": false,
+    "isOnlineCourse": true
+  },
+  {
+    "id": 27,
+    "key": "bunt14",
+    "title": "«Бунт 14» — онлайн-подготовка к олимпиадам по истории",
+    "category": "Онлайн-школы и подготовка",
+    "organizer": "Образовательный проект «Бунт 14»",
+    "officialUrl": "https://bunt14olimpiad.zenclass.ru/school/products",
+    "sourceUrl": "https://t.me/riot14olimp",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн; занятия и практикумы на образовательной платформе",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники; классы и уровень подготовки следует уточнять для выбранного курса",
+    "education": [
+      "Школьник"
+    ],
+    "educationLevels": [],
+    "interests": [
+      "Образование",
+      "Олимпиады и конкурсы"
+    ],
+    "subjects": [
+      "история"
+    ],
+    "participationCost": "Платно; опубликованные курсы от 4 490 ₽",
+    "financialSupport": false,
+    "deadline": "Основной сезонный курс указан как идущий с 31.08.2026 по 31.01.2027; возможность присоединиться к текущему потоку уточняйте",
+    "status": "Срок уточняется",
+    "documents": "Регистрация на платформе; дополнительные требования — на странице продукта.",
+    "description": "Специализированный проект подготовки к олимпиадам по истории. В описании основного курса заявлены подготовка к школьному этапу, отборочным и региональному этапам, практикумы в форматах ВсОШ и перечневых олимпиад, пробные работы и куратор.",
+    "eligibility": "Школьники, готовящиеся к олимпиадам по истории; точный допуск зависит от курса.",
+    "accessibility": "Дистанционный формат; доступность из регионов подтверждается платформой курса.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название, специализация и наличие сезонных продуктов подтверждены страницей продуктов и публичным каналом проекта; детали конкретного курса и свободные места перепроверять перед оплатой.",
+    "demo": false,
+    "participationMode": "individual",
+    "isCase": false,
+    "isOnlineCourse": true
+  },
+  {
+    "id": 28,
+    "key": "sirius-courses",
+    "title": "«Сириус.Курсы» — бесплатные онлайн-курсы",
+    "category": "Курсы и образовательные программы",
+    "organizer": "Образовательный фонд «Талант и успех»",
+    "officialUrl": "https://edu.sirius.online/",
+    "sourceUrl": "https://sochisirius.ru/news/7554",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Онлайн",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Основная аудитория — школьники 7–11 классов; также могут заниматься студенты вузов и другие слушатели",
+    "education": [
+      "Школьник",
+      "Студент"
+    ],
+    "educationLevels": [],
+    "interests": [
+      "Образование",
+      "Наука"
+    ],
+    "subjects": [
+      "математика",
+      "программирование",
+      "информатика",
+      "физика",
+      "химия",
+      "биология",
+      "искусственный интеллект",
+      "лингвистика"
+    ],
+    "participationCost": "Бесплатно; более 55 онлайн-курсов указано в расписании 2026 года",
+    "financialSupport": false,
+    "deadline": "Расписание и запись зависят от конкретного курса",
+    "status": "Набор проводится регулярно",
+    "documents": "Регистрация на платформе; требования к входному уровню — в описании курса.",
+    "description": "Платформа углублённого обучения. В опубликованном расписании 2026 года заявлено более 55 бесплатных онлайн-курсов по математике, программированию, физике, химии, биологии, искусственному интеллекту и лингвистике.",
+    "eligibility": "Прежде всего школьники 7–11 классов; официальный материал также указывает, что курсы доступны студентам вузов, учителям, родителям и другим слушателям.",
+    "accessibility": "Онлайн; можно заниматься дистанционно.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Бесплатность, онлайн-формат, направления и основная аудитория подтверждены новостью «Сириуса» о расписании 2026 года; расписание отдельных курсов обновляется отдельно.",
+    "demo": false,
+    "participationMode": "individual",
+    "isCase": false,
+    "isOnlineCourse": true
+  },
+  {
+    "id": 29,
+    "key": "hse-vysshaya-proba",
+    "title": "Олимпиада школьников НИУ ВШЭ «Высшая проба»",
+    "category": "Олимпиады",
+    "organizer": "НИУ ВШЭ",
+    "officialUrl": "https://olymp.hse.ru/mmo/",
+    "sourceUrl": "https://olymp.hse.ru/mmo/",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Отборочный этап дистанционный в два тура; заключительный этап — на очных площадках",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники 7–11 классов; конкретные классы допуска зависят от профиля",
+    "education": [
+      "Школьник"
+    ],
+    "educationLevels": [
+      "Основное общее",
+      "Среднее общее"
+    ],
+    "interests": [
+      "Олимпиады и конкурсы",
+      "Образование"
+    ],
+    "subjects": [
+      "история",
+      "математика",
+      "экономика",
+      "обществознание",
+      "информатика",
+      "иностранные языки"
+    ],
+    "participationCost": "Бесплатность участия уточняется в правилах олимпиады; расходы на поездку — по условиям площадки",
+    "financialSupport": false,
+    "deadline": "Регистрация на большинство профилей завершилась в сентябре 2026 года; второй тур отбора — 13–22 ноября 2026 года; заключительный этап — 5–15 февраля 2027 года",
+    "status": "Приём заявок завершён",
+    "documents": "Онлайн-регистрация и согласие на обработку персональных данных; требования — по профилю.",
+    "description": "Многопрофильная олимпиада НИУ ВШЭ. В сезоне 2026/27 отборочный этап включает два дистанционных тура; заключительный этап запланирован на февраль 2027 года.",
+    "eligibility": "Школьники; классы допуска определяются профилем олимпиады.",
+    "accessibility": "Первый и второй отборочные туры дистанционные; заключительный этап проводится на площадках, перечисленных на сайте.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Даты двух туров и заключительного этапа подтверждены официальной страницей олимпиады; регистрация на большинство профилей закрыта.",
+    "demo": false,
+    "participationMode": "individual",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 30,
+    "key": "hse-klyuch",
+    "title": "Всероссийский кейс-чемпионат школьников «КЛЮЧ»",
+    "category": "Кейс-чемпионаты",
+    "organizer": "НИУ ВШЭ; инициатор и постоянный партнёр — Минэкономразвития России",
+    "officialUrl": "https://olymp.hse.ru/championship",
+    "sourceUrl": "https://iac.hse.ru/news/edu/1191844570.html",
+    "region": [
+      "Вся Россия"
+    ],
+    "format": "Региональный этап: выполнение задания дистанционно; защиты очно или дистанционно по региону; финал — 4–7 декабря 2026 года",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Школьники 9–11 классов и студенты техникумов/колледжей любого курса",
+    "education": [
+      "Школьник",
+      "Студент"
+    ],
+    "educationLevels": [
+      "Основное общее",
+      "Среднее общее",
+      "Среднее профессиональное"
+    ],
+    "interests": [
+      "Кейсы",
+      "Предпринимательство",
+      "Экономика"
+    ],
+    "subjects": [
+      "экономика",
+      "предпринимательство",
+      "социальные проекты",
+      "проектная деятельность"
+    ],
+    "participationCost": "Условия оплаты не указаны в проверенной карточке; участие и поездки уточнять у организаторов",
+    "financialSupport": false,
+    "deadline": "Регистрация команд на сезон 2026/27 завершилась 25 сентября 2026 года; финал запланирован на 4–7 декабря 2026 года",
+    "status": "Приём заявок завершён",
+    "documents": "Командная регистрация и согласия; полный перечень — в правилах и на странице чемпионата.",
+    "description": "Команды решают реальные бизнес-задачи или разрабатывают проекты при поддержке менторов. В сезоне 2026/27 тема включает агротехнологии и пищевые технологии; подробности кейсов публикует организатор.",
+    "eligibility": "Школьники 9–11 классов и студенты техникумов/колледжей любого курса; нужна команда или готовность её собрать.",
+    "accessibility": "Региональные задания выполняются дистанционно; защита зависит от города, финал — по правилам организатора.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Аудитория, командный формат, этапы и даты подтверждены официальной страницей НИУ ВШЭ; регистрация закрыта. Условия поездок и компенсаций нужно уточнять по региональной площадке.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "2–4 участника (по публикации о сезоне 2026/27)",
+    "caseTheme": "Решение реальных бизнес-кейсов; тема сезона 2026/27 — агротех и фудтех",
+    "caseStages": "I. Регистрация, обучение и квалификационный отбор (20.08–25.09.2026); II. Региональные кейс-чемпионаты (задания до 22.10, защиты 5–8.11.2026); III. Финал (4–7.12.2026).",
+    "finalFormat": "Региональные защиты — очно или дистанционно по площадке; финальный формат уточняется у организатора.",
+    "travel": "Для региональных защит формат зависит от города; поездка и компенсация расходов не подтверждены в общей карточке.",
+    "prizes": "На странице заявлены бонусы дипломантам, включая преференции при поступлении и возможность претендовать на грант Президента РФ; детали — по правилам.",
+    "isCase": true,
+    "isOnlineCourse": false
+  }
+];
+
+</script>
+<script>
+'use strict';
+window.OPPORTUNITIES.push(...[
+  {
+    "id": 31,
+    "key": "psb-data-analyst",
+    "title": "Стажёр-аналитик данных — ПСБ",
+    "category": "Стажировки и карьера",
+    "organizer": "ПСБ · участник Карьерного марафона НИУ ВШЭ",
+    "officialUrl": "https://job.psbank.ru/vacancies/young-specialists/4986",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются в вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возрастные требования в дайджесте не указаны",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Экономика",
+      "Аналитика"
+    ],
+    "subjects": [
+      "экономика",
+      "аналитика",
+      "данные",
+      "финансы"
+    ],
+    "participationCost": "Оплата стажировки в источнике не указана",
+    "financialSupport": false,
+    "deadline": "Срок отклика — на странице вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить в карточке вакансии",
+    "description": "Стажёрская позиция в аналитике данных. В дайджесте Центра развития карьеры НИУ ВШЭ от 14 ноября 2026 года.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Формат работы уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название и наличие позиции подтверждены дайджестом HSE Career; ссылка ведёт на страницу вакансии ПСБ.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 32,
+    "key": "psb-risk",
+    "title": "Стажёр мониторинга корпоративных рисков — ПСБ",
+    "category": "Стажировки и карьера",
+    "organizer": "ПСБ · участник Карьерного марафона НИУ ВШЭ",
+    "officialUrl": "https://job.psbank.ru/vacancies/young-specialists/4729",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются в вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возрастные требования в дайджесте не указаны",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Экономика",
+      "Риски"
+    ],
+    "subjects": [
+      "экономика",
+      "риски",
+      "финансы",
+      "аналитика"
+    ],
+    "participationCost": "Условия оплаты в источнике не указаны",
+    "financialSupport": false,
+    "deadline": "Срок отклика — на странице вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить в карточке вакансии",
+    "description": "Стажёрская позиция в мониторинге корпоративных рисков. Условия отбора следует уточнить у работодателя.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Формат работы уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название подтверждено дайджестом HSE Career; ссылка ведёт на страницу вакансии ПСБ.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 33,
+    "key": "psb-training",
+    "title": "Стажёр по разработке обучающих программ — ПСБ",
+    "category": "Стажировки и карьера",
+    "organizer": "ПСБ · участник Карьерного марафона НИУ ВШЭ",
+    "officialUrl": "https://job.psbank.ru/vacancies/young-specialists/4575",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются в вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возрастные требования в дайджесте не указаны",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Образование"
+    ],
+    "subjects": [
+      "образование",
+      "обучение",
+      "разработка программ"
+    ],
+    "participationCost": "Условия оплаты в источнике не указаны",
+    "financialSupport": false,
+    "deadline": "Срок отклика — на странице вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить в карточке вакансии",
+    "description": "Стажёрская позиция по разработке обучающих программ в ПСБ.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Формат работы уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название подтверждено дайджестом HSE Career; ссылка ведёт на страницу вакансии ПСБ.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 34,
+    "key": "psb-data-engineer",
+    "title": "Стажёр — инженер данных — ПСБ",
+    "category": "Стажировки и карьера",
+    "organizer": "ПСБ · участник Карьерного марафона НИУ ВШЭ",
+    "officialUrl": "https://job.psbank.ru/vacancies/young-specialists/4489",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются в вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возрастные требования в дайджесте не указаны",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "IT"
+    ],
+    "subjects": [
+      "информатика",
+      "программирование",
+      "данные",
+      "инженерия"
+    ],
+    "participationCost": "Условия оплаты в источнике не указаны",
+    "financialSupport": false,
+    "deadline": "Срок отклика — на странице вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить в карточке вакансии",
+    "description": "Стажёрская позиция инженера данных в ПСБ.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Формат работы уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название подтверждено дайджестом HSE Career; ссылка ведёт на страницу вакансии ПСБ.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 35,
+    "key": "sber-ai",
+    "title": "Аналитик по развитию AI-агентов для финансовой оценки — Сбер",
+    "category": "Стажировки и карьера",
+    "organizer": "Сбер · участник Карьерного марафона НИУ ВШЭ",
+    "officialUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются в вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Возрастные требования в дайджесте не указаны",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "IT",
+      "Экономика"
+    ],
+    "subjects": [
+      "экономика",
+      "финансы",
+      "искусственный интеллект",
+      "аналитика",
+      "AI"
+    ],
+    "participationCost": "Условия оплаты в источнике не указаны",
+    "financialSupport": false,
+    "deadline": "Срок отклика в дайджесте не указан",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "См. исходный дайджест и актуальную страницу работодателя",
+    "description": "Позиция в Дирекции инвестиционной экспертизы, блок «Финансы». В дайджесте указана как вакансия Сбера.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Формат работы уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название и подразделение подтверждены дайджестом HSE Career; индивидуальная ссылка на вакансию в публикации не выделена.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 36,
+    "key": "vk-vacancies",
+    "title": "Открытые вакансии — VK",
+    "category": "Стажировки и карьера",
+    "organizer": "VK",
+    "officialUrl": "https://team.vk.company/vacancy/",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Зависит от вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования зависят от конкретной вакансии",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Карьера",
+      "IT",
+      "Медиа"
+    ],
+    "subjects": [
+      "IT",
+      "программирование",
+      "медиа",
+      "дизайн",
+      "аналитика"
+    ],
+    "participationCost": "Условия оплаты указаны в конкретной вакансии",
+    "financialSupport": false,
+    "deadline": "Зависит от вакансии",
+    "status": "Раздел вакансий работодателя",
+    "documents": "Зависят от вакансии",
+    "description": "Раздел открытых вакансий VK, упомянутый в дайджесте Центра развития карьеры НИУ ВШЭ от 14 ноября 2026 года.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Зависит от вакансии.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница вакансий VK указана в дайджесте HSE Career.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 37,
+    "key": "vk-internship",
+    "title": "Открытые стажировки — VK",
+    "category": "Стажировки и карьера",
+    "organizer": "VK",
+    "officialUrl": "https://internship.vk.company/internship",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Зависит от программы",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования зависят от программы",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "IT"
+    ],
+    "subjects": [
+      "IT",
+      "программирование",
+      "дизайн",
+      "аналитика",
+      "продукт"
+    ],
+    "participationCost": "Условия оплаты зависят от программы",
+    "financialSupport": false,
+    "deadline": "Зависит от набора",
+    "status": "Раздел стажировок работодателя",
+    "documents": "Зависят от программы",
+    "description": "Официальный раздел стажировок VK, включённый в дайджест HSE Career.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Зависит от программы.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Официальная страница стажировок VK указана в дайджесте HSE Career.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 38,
+    "key": "x5-bigin",
+    "title": "Оплачиваемая стажировка BIG IN — X5",
+    "category": "Стажировки и карьера",
+    "organizer": "X5",
+    "officialUrl": "https://generationx5.tech/",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются на сайте программы",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования к возрасту и обучению нужно проверить",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Бизнес",
+      "IT"
+    ],
+    "subjects": [
+      "бизнес",
+      "экономика",
+      "аналитика",
+      "IT",
+      "продукт"
+    ],
+    "participationCost": "Стажировка обозначена как оплачиваемая",
+    "financialSupport": false,
+    "deadline": "Актуальный набор — на сайте программы",
+    "status": "Программа указана в дайджесте 14 ноября 2026",
+    "documents": "См. сайт BIG IN",
+    "description": "Оплачиваемая стажировка BIG IN от X5. Условия, направления и сроки набора следует проверить на официальном сайте.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Формат уточняется на сайте программы.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Программа и статус оплачиваемой стажировки подтверждены дайджестом HSE Career; сайт программы указан как целевая ссылка.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 39,
+    "key": "econiva-export",
+    "title": "Стажёр в аналитике экспортных рынков — ГК «ЭкоНива»",
+    "category": "Стажировки и карьера",
+    "organizer": "ГК «ЭкоНива»",
+    "officialUrl": "https://teletype.in/@hsecareer/0z6Dd0lYHMj",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования к возрасту и обучению нужно проверить",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Экономика"
+    ],
+    "subjects": [
+      "экономика",
+      "аналитика",
+      "экспорт",
+      "международные рынки"
+    ],
+    "participationCost": "Не указано",
+    "financialSupport": false,
+    "deadline": "Срок отклика — в публикации вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить в публикации вакансии",
+    "description": "Стажёрская позиция в направлении аналитики экспортных рынков. Дайджест указывает несколько направлений.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Ссылка на описание вакансии ведёт на отдельную публикацию HSE Career; условия работодателя следует перепроверить.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 40,
+    "key": "econiva-ai-creator",
+    "title": "AI-креатор в отдел коммуникационного дизайна — ГК «ЭкоНива»",
+    "category": "Стажировки и карьера",
+    "organizer": "ГК «ЭкоНива»",
+    "officialUrl": "https://teletype.in/@hsecareer/y1NsF7tZe1",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования к возрасту и обучению нужно проверить",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Дизайн",
+      "IT"
+    ],
+    "subjects": [
+      "дизайн",
+      "коммуникации",
+      "искусственный интеллект",
+      "AI"
+    ],
+    "participationCost": "Не указано",
+    "financialSupport": false,
+    "deadline": "Срок отклика — в публикации вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить в публикации вакансии",
+    "description": "Вакансия AI-креатора в отделе коммуникационного дизайна ГК «ЭкоНива».",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Уточняется у работодателя.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Ссылка на описание вакансии ведёт на отдельную публикацию HSE Career; условия работодателя следует перепроверить.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 41,
+    "key": "media-instinct",
+    "title": "Strategic Media Planning — Media Instinct Prime",
+    "category": "Стажировки и карьера",
+    "organizer": "Media Instinct Prime",
+    "officialUrl": "https://teletype.in/@hsecareer/oQtq6JOknuI",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат уточняются",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования к возрасту и обучению нужно проверить",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Медиа"
+    ],
+    "subjects": [
+      "медиа",
+      "стратегия",
+      "маркетинг",
+      "планирование"
+    ],
+    "participationCost": "Не указано",
+    "financialSupport": false,
+    "deadline": "Срок отклика — в публикации вакансии",
+    "status": "Тематическая стажировка из дайджеста 14 ноября 2026",
+    "documents": "Уточнить в публикации вакансии",
+    "description": "Тематическая стажировка по направлению Strategic Media Planning.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Уточняется у организатора.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Название подтверждено дайджестом HSE Career; подробности доступны по отдельной публикации.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 42,
+    "key": "pricecube-growth",
+    "title": "Growth Product Manager — PriceCube",
+    "category": "Стажировки и карьера",
+    "organizer": "PriceCube",
+    "officialUrl": "https://ekaterinburg.hh.ru/vacancy/138917134",
+    "sourceUrl": "https://teletype.in/@hsecareer/1H9XzNqf0Ps",
+    "region": [
+      "Россия"
+    ],
+    "format": "Условия и формат указаны в вакансии",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Требования к возрасту и обучению нужно проверить",
+    "education": [],
+    "educationLevels": [],
+    "interests": [
+      "Карьера",
+      "IT",
+      "Бизнес"
+    ],
+    "subjects": [
+      "продукт",
+      "product management",
+      "growth",
+      "IT",
+      "бизнес"
+    ],
+    "participationCost": "Не указано",
+    "financialSupport": false,
+    "deadline": "Срок отклика — на странице вакансии",
+    "status": "Вакансия опубликована в дайджесте 14 ноября 2026",
+    "documents": "Уточнить на странице вакансии",
+    "description": "Вакансия Growth Product Manager в PriceCube, включённая в раздел IT дайджеста HSE Career.",
+    "eligibility": "Дайджест не указывает требования к курсу, возрасту или статусу кандидата. Проверь критерии на странице вакансии / у работодателя.",
+    "accessibility": "Указана на странице вакансии.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Ссылка на вакансию hh.ru указана в дайджесте HSE Career.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 43,
+    "key": "t2-career-school",
+    "title": "Проектная карьерная школа Т2 × ЦРК НИУ ВШЭ: Big Data",
+    "category": "Кейс-чемпионаты",
+    "organizer": "Т2 × Центр развития карьеры НИУ ВШЭ",
+    "officialUrl": "",
+    "sourceUrl": "",
+    "region": [
+      "Москва"
+    ],
+    "format": "Очные лекции 23, 24 и 26 ноября; защита проекта в офисе Т2 3 декабря",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "Только для студентов НИУ ВШЭ",
+    "education": [
+      "Студент"
+    ],
+    "educationLevels": [
+      "Неоконченное высшее",
+      "Высшее"
+    ],
+    "interests": [
+      "Стажировки",
+      "Карьера",
+      "Проектная работа",
+      "Экономика",
+      "IT"
+    ],
+    "subjects": [
+      "большие данные",
+      "big data",
+      "монетизация",
+      "экономика",
+      "исследования",
+      "data driven",
+      "AI"
+    ],
+    "participationCost": "Стоимость участия в объявлении не указана",
+    "financialSupport": false,
+    "deadline": "Регистрация до 19 ноября 2026 включительно",
+    "deadlineDate": "2026-11-19",
+    "status": "Регистрация открыта по объявлению пользователя; ссылку на форму нужно добавить",
+    "documents": "Регистрация на сайте школы; ссылка в предоставленном объявлении отсутствует",
+    "description": "Проектная карьерная школа о продуктовых подходах к внешней монетизации больших данных. Участники изучают сбор и применение Big Data, монетизацию и исследовательские подходы, а затем защищают финальный проект.",
+    "eligibility": "Участие возможно только для студентов НИУ ВШЭ. Другие критерии в предоставленном объявлении не указаны.",
+    "accessibility": "Лекции: Большой Трёхсвятительский переулок, 3. Финальная защита — в офисе Т2.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Даты, содержание и аудитория перенесены из объявления, предоставленного пользователем. Ссылка на регистрацию не приложена; не следует считать набор проверенным по официальной странице.",
+    "demo": false,
+    "participationMode": "unknown",
+    "teamSize": "Формат команды не указан в объявлении",
+    "caseTheme": "Большие данные: продуктовый подход для внешней монетизации",
+    "caseStages": "23 ноября: сбор Big Data и роли специалистов; 24 ноября: монетизация Big Data (части 1 и 2); 26 ноября: классические исследования и Data Driven / AI First; 3 декабря: защита финального проекта.",
+    "finalFormat": "Очная защита проекта в офисе Т2 3 декабря 2026 года",
+    "travel": "Лекции проходят в Большом Трёхсвятительском переулке, 3; финал — офис Т2. Компенсация проезда не указана.",
+    "prizes": "Сертификат Т2 и ЦРК НИУ ВШЭ; возможность пополнить портфолио кейсом и посетить офис Т2; баллы карты лояльности ЦРК при успешном прохождении.",
+    "isCase": true,
+    "isOnlineCourse": false
+  },
+  {
+    "id": 44,
+    "key": "hse-career-marathon",
+    "title": "Карьерный марафон НИУ ВШЭ — 18 ноября",
+    "category": "Карьерные события",
+    "organizer": "Центр развития карьеры НИУ ВШЭ",
+    "officialUrl": "https://max.ru/id7714030726_gos2/AaGL7giwJpU",
+    "sourceUrl": "https://max.ru/id7714030726_gos2/AaGL7giwJpU",
+    "region": [
+      "Москва"
+    ],
+    "format": "Очно; предусмотрена прямая трансляция из Атриума",
+    "ageMin": null,
+    "ageMax": null,
+    "ageLabel": "В посте указано участие студентов НИУ ВШЭ; внешним гостям нужна регистрация",
+    "education": [
+      "Студент"
+    ],
+    "educationLevels": [
+      "Неоконченное высшее",
+      "Высшее"
+    ],
+    "interests": [
+      "Карьера",
+      "Стажировки",
+      "Нетворкинг"
+    ],
+    "subjects": [
+      "карьера",
+      "работодатели",
+      "стажировки",
+      "вакансии"
+    ],
+    "participationCost": "Участие в посте не обозначено как платное",
+    "financialSupport": false,
+    "deadline": "18 ноября 2026, 12:00–17:00",
+    "deadlineDate": "2026-11-18",
+    "status": "Дата мероприятия подтверждена; условия входа проверьте в посте",
+    "documents": "Внешним гостям требуется регистрация; студентам ВШЭ в посте обязательная регистрация не указана.",
+    "description": "Карьерное событие с активностями от компаний, прямой трансляцией, квизами и возможностью познакомиться с работодателями. Среди участников — Авито, Альфа-Банк, VK Education, ВТБ, Ozon, ПСБ, Сбер, Т2, X5 и другие.",
+    "eligibility": "Пост сообщает, что студенты других вузов также могут участвовать; регистрация обязательна только для внешних гостей. Проверьте актуальные условия перед посещением.",
+    "accessibility": "Покровский бульвар, 11, Атриум; 18 ноября 2026 года, 12:00–17:00.",
+    "lastChecked": "2026-11-14",
+    "verificationStatus": "Дата, место и условия участия взяты из поста ВШЭ Карьера в MAX, открытого 14 ноября 2026 года.",
+    "demo": false,
+    "participationMode": "individual",
+    "teamSize": "Индивидуальное посещение",
+    "caseTheme": "",
+    "caseStages": "",
+    "finalFormat": "",
+    "travel": "",
+    "prizes": "",
+    "isCase": false,
+    "isOnlineCourse": false
+  }
+]);
+const opportunities = Array.isArray(window.OPPORTUNITIES) ? window.OPPORTUNITIES : [];
+const categories = [
+ ['Онлайн-школы и подготовка','💻','Предметные курсы и олимпиадная подготовка'],
+ ['Олимпиады','🏆','Предметные состязания'],
+ ['Кейс-чемпионаты','🧩','Командные и проектные задачи'],
+ ['Конкурсы и проектные программы','🚀','Идеи, проекты и соревнования'],
+ ['Гранты и инициативные проекты','💡','Поддержка идей'],
+ ['Курсы и образовательные программы','🎓','Новые знания и навыки'],
+ ['Стажировки и карьера','💼','Первый профессиональный опыт'],
+ ['Карьерные события','📅','Встречи с работодателями и карьерные марафоны'],
+ ['Волонтёрство','🤝','Участие в общественных проектах'],
+ ['Научные и технологические программы','🔬','Исследования и технологии']
+];
+const ageBands = {'14-17':[14,17],'18-21':[18,21],'22-25':[22,25],'26-30':[26,30],'31-35':[31,35]};
+let currentPage='catalog', previousPage='catalog', currentDetail=null;
+let activeResults=[], recommendations=[], activeRecommendationSet=false;
+const readStore=(key)=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch(_){return[]}};
+const writeStore=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}};
+let favorites=readStore('rs_favorites'), viewed=readStore('rs_viewed');
+const $=id=>document.getElementById(id);
+const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(message){const e=$('toast');if(!e)return;e.textContent=message;e.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>e.classList.remove('show'),2600)}
+function showPage(page){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ const target=$('page-'+page);if(!target)return;
+ target.classList.add('active');currentPage=page;
+ document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ if($('mobileMenu'))$('mobileMenu').classList.remove('open');
+ if(page==='catalog')renderCatalog();
+ if(page==='saved')renderSaved();
+ if(page==='about'){renderSources();renderUnverified()}
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+if($('menuToggle'))$('menuToggle').addEventListener('click',()=>$('mobileMenu').classList.toggle('open'));
+function renderCategories(){
+ $('homeCategories').innerHTML=categories.map(c=>`<button class="category" onclick="openCategory('${esc(c[0])}')"><span class="cat-icon">${c[1]}</span><strong>${esc(c[0])}</strong><small>${esc(c[2])}</small></button>`).join('');
+ $('filterDirection').innerHTML='<option value="">Все категории</option>'+categories.map(c=>`<option value="${esc(c[0])}">${esc(c[0])}</option>`).join('');
+ const regs=[...new Set(opportunities.flatMap(o=>Array.isArray(o.region)?o.region:[]))].filter(x=>x!=='Вся Россия').sort((a,b)=>a.localeCompare(b,'ru'));
+ $('filterRegion').innerHTML='<option value="">Все регионы</option><option value="Вся Россия">Вся Россия</option>'+regs.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join('');
+}
+function isOnline(o){return /онлайн|дистанц|заочн/i.test(o.format||'')}
+function isOffline(o){return /очно|офлайн/i.test(o.format||'')&&!isOnline(o)}
+function ageMatch(o,band){
+ if(!band)return true;
+ const range=ageBands[band];if(!range)return true;
+ if(!Number.isFinite(o.ageMin)||!Number.isFinite(o.ageMax))return false;
+ return o.ageMax>=range[0]&&o.ageMin<=range[1];
+}
+function regionMatch(o,region){
+ if(!region)return true;
+ return (o.region||[]).includes('Вся Россия')||(o.region||[]).includes(region);
+}
+function educationMatch(o,status){
+ if(!status)return true;
+ return Array.isArray(o.education)&&o.education.includes(status);
+}
+function levelMatch(o,level){
+ if(!level)return true;
+ return Array.isArray(o.educationLevels)&&o.educationLevels.includes(level);
+}
+function freeMatch(o){return /бесплатно|бесплатн/i.test(o.participationCost||'')}
+function formatDate(s){
+ if(!s||!/^\d{4}-\d\d-\d\d$/.test(s))return 'Не указан / уточняется на официальном сайте';
+ return new Date(s+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+}
+function deadlineKey(o){
+ if(o.deadlineDate&&/^\d{4}-\d\d-\d\d$/.test(o.deadlineDate))return o.deadlineDate;
+ const m=String(o.deadline||'').match(/\b(20\d{2})[-/.](\d{2})[-/.](\d{2})\b/);
+ return m?`${m[1]}-${m[2]}-${m[3]}`:'9999-12-31';
+}
+function scoreFor(o,p){
+ let score=0,max=0,why=[];
+ if(p.age){max+=3;if(ageMatch(o,p.age)){score+=3;why.push('возрастной диапазон совпадает')}} 
+ if(p.status){max+=3;if(educationMatch(o,p.status)){score+=3;why.push('подходит по статусу')}} 
+ if(p.level){max+=3;if(levelMatch(o,p.level)){score+=3;why.push('подходит по уровню образования')}} 
+ if(p.interests.length){max+=2;if(p.interests.some(x=>(o.category||'').toLowerCase().includes(x.toLowerCase()))){score+=2;why.push('совпадает направление интересов')}}
+ if(p.subject){max+=2;if((o.subjects||[]).some(x=>x.toLowerCase().includes(p.subject))||(o.title+' '+o.description).toLowerCase().includes(p.subject)){score+=2;why.push('совпадает предмет или направление')}}
+ if(p.region){max+=2;if(regionMatch(o,p.region)){score+=2;why.push('доступно в выбранном регионе')}}
+ if(p.online==='online'){max+=2;if(isOnline(o)){score+=2;why.push('предусмотрен онлайн-формат')}}
+ if(freeMatch(o)){max+=1;score+=1;why.push('указано бесплатное участие')}
+ if(o.financialSupport){max+=1;score+=1;why.push('заявлена финансовая поддержка')}
+ return {score,max,percent:max?Math.round(score/max*100):0,why};
+}
+function cardHTML(o,withMatch=false){
+ const saved=favorites.includes(o.id);
+ const subjects=(o.subjects||[]).slice(0,5).map(s=>`<span class="subject-tag">${esc(s)}</span>`).join('');
+ const caseBlock=o.isCase?`<div class="case-info"><strong>Формат кейса:</strong> ${esc(o.caseTheme||'см. правила')}<br><strong>Участие:</strong> ${esc(o.teamSize||'командный формат')}. ${esc(o.caseStages||'Этапы — на официальной странице.')}</div>`:'';
+ const match=o._match&&withMatch?`<div class="match-score">Совпадение: ${o._match.percent}%</div><p class="match-reason">Почему подходит: ${esc(o._match.why.join('; ')||'часть критериев не опубликована — проверь условия у организатора')}</p>`:'';
+ return `<article class="op-card"><div class="card-top"><span class="tag">${esc(o.category)}</span><span class="status-pill">${esc(o.status||'Срок уточняется')}</span></div><h3>${esc(o.title)}</h3><p class="desc">${esc(o.description)}</p><div class="subject-tags">${subjects}</div>${caseBlock}<div class="meta-list"><span>🏢 ${esc(o.organizer)}</span><span>📍 ${esc((o.region||[]).join(', '))}</span><span>🌐 ${esc(o.format)}</span><span>👥 ${esc(o.ageLabel)}</span><span>🗓 ${esc(o.deadline)}</span><span>💳 ${esc(o.participationCost)}</span></div><div class="card-bottom"><button class="btn btn-primary" onclick="openDetail(${Number(o.id)})">Подробнее →</button><button class="icon-btn ${saved?'saved':''}" aria-label="${saved?'Убрать из избранного':'Сохранить'}" onclick="toggleFavorite(${Number(o.id)})">${saved?'♥':'♡'}</button></div>${match}</article>`;
+}
+function filterList(){
+ const q=$('searchInput').value.trim().toLowerCase(),subject=$('filterSubject').value.trim().toLowerCase();
+ const cat=$('filterDirection').value,reg=$('filterRegion').value,fmt=$('filterFormat').value,age=$('filterAge').value,edu=$('filterEducation').value,level=$('filterLevel').value,supp=$('filterSupport').value,status=$('filterStatus').value,online=$('filterOnline').value,team=$('filterTeam').value,audience=$('filterAudience').value;
+ let list=opportunities.filter(o=>{
+  const text=[o.title,o.description,o.organizer,o.category,...(o.subjects||[]),...(o.interests||[])].join(' ').toLowerCase();
+  const formatOK=!fmt||(fmt==='Онлайн'?isOnline(o):fmt==='Офлайн'?isOffline(o):(/смешан|дистанц.*очно|очно.*дистанц/i.test(o.format||'')));
+  const teamOK=!team||(team==='team'?o.participationMode==='team':o.participationMode==='individual'||o.participationMode==='either');
+  return (!q||text.includes(q))&&(!subject||(o.subjects||[]).some(s=>s.toLowerCase().includes(subject))||text.includes(subject))&&(!cat||o.category===cat)&&regionMatch(o,reg)&&formatOK&&ageMatch(o,age)&&educationMatch(o,edu)&&levelMatch(o,level)&&(!supp||(supp==='yes'?o.financialSupport===true:freeMatch(o)))&&(!status||o.status===status)&&(!online||(online==='yes'?isOnline(o):isOffline(o)))&&teamOK&&(!audience||educationMatch(o,audience));
+ });
+ const sort=$('sortDeadline').value;
+ if(sort==='title')list.sort((a,b)=>a.title.localeCompare(b.title,'ru'));
+ else if(sort==='soon'||sort==='late')list.sort((a,b)=>sort==='soon'?deadlineKey(a).localeCompare(deadlineKey(b)):deadlineKey(b).localeCompare(deadlineKey(a)));
+ else if(sort==='match')list.sort((a,b)=>(b._match?.percent||0)-(a._match?.percent||0));
+ return list;
+}
+function renderCatalog(){
+ const list=activeRecommendationSet?recommendations:filterList();
+ activeResults=list;
+ $('resultsCount').textContent=activeRecommendationSet?`Подобрано для вас: ${list.length}`:`Найдено: ${list.length} из ${opportunities.length}`;
+ if($('resultsTitle'))$('resultsTitle').textContent=activeRecommendationSet?`Подобрано возможностей: ${list.length}`:'Все возможности';
+ if($('emptyMessage')){ $('emptyMessage').hidden=list.length>0; $('emptyMessage').textContent=list.length?'':'По выбранным параметрам ничего не найдено. Попробуйте изменить фильтры.'; }
+ $('catalog').innerHTML=list.length?list.map(o=>cardHTML(o,activeRecommendationSet)).join():`<div class="empty"><div class="big">🔎</div><h3>${activeRecommendationSet?'Пока не нашли подтверждённых совпадений':'Подходящих возможностей пока не найдено'}</h3><p>Можно расширить поиск: убрать ограничение по региону, разрешить онлайн-формат, не указывать возраст или посмотреть соседние направления. Неизвестные условия мы не считаем совпадением.</p><div class="empty-actions"><button class="btn btn-primary" onclick="resetFilters()">Сбросить фильтры</button><button class="btn btn-light" onclick="showPage('home')">Изменить анкету</button></div></div>`;
+}
+const filterIds=['searchInput','filterSubject','filterDirection','filterRegion','filterFormat','filterAge','filterEducation','filterLevel','filterSupport','filterStatus','filterOnline','filterTeam','filterAudience','sortDeadline'];
+filterIds.forEach(id=>{const e=$(id);if(e){e.addEventListener('input',()=>{activeRecommendationSet=false;recommendations=[];renderCatalog()});e.addEventListener('change',()=>{activeRecommendationSet=false;recommendations=[];renderCatalog()})}});
+function resetFilters(){
+ ['searchInput','filterSubject','filterDirection','filterRegion','filterFormat','filterAge','filterEducation','filterLevel','filterSupport','filterStatus','filterOnline','filterTeam','filterAudience'].forEach(id=>{if($(id))$(id).value=''});
+ $('sortDeadline').value='soon';activeRecommendationSet=false;recommendations=[];renderCatalog();
+}
+function openCategory(category){showPage('catalog');$('filterDirection').value=category;activeRecommendationSet=false;renderCatalog()}
+function toggleFavorite(id){
+ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+ writeStore('rs_favorites',favorites);updateSavedCount();
+ if(currentPage==='catalog')renderCatalog();if(currentPage==='detail')renderDetail();if(currentPage==='saved')renderSaved();
+ toast(favorites.includes(id)?'Добавлено в избранное':'Удалено из избранного');
+}
+function updateSavedCount(){$('savedCount').textContent=favorites.length}
+function openDetail(id){
+ const o=opportunities.find(x=>x.id===id);if(!o)return;
+ currentDetail=id;
+ viewed=[id,...viewed.filter(x=>x!==id)].slice(0,10);writeStore('rs_viewed',viewed);
+ const saved=favorites.includes(o.id);
+ const caseSection=o.isCase?`<div class="detail-section"><h3>Параметры проектной / кейсовой программы</h3><p><strong>Тематика:</strong> ${esc(o.caseTheme||'Уточняется')}</p><p><strong>Формат команды:</strong> ${esc(o.teamSize||'Уточняется')}</p><p><strong>Этапы:</strong> ${esc(o.caseStages||'Уточняются')}</p><p><strong>Финал:</strong> ${esc(o.finalFormat||'Уточняется')}</p><p><strong>Поездки и компенсация:</strong> ${esc(o.travel||'Уточняется')}</p><p><strong>Призы и поддержка:</strong> ${esc(o.prizes||'Не указаны')}</p></div>`:'';
+ const url=(o.officialUrl||'').trim();
+ const source=(o.sourceUrl||'').trim();
+ const safeUrl=/^https?:\/\//i.test(url)?url:'';
+ const safeSource=/^https?:\/\//i.test(source)?source:'';
+ $('detailsContent').innerHTML=`<span class="tag">${esc(o.category)}</span> <span class="status-pill">${esc(o.status||'Срок уточняется')}</span><h2 id="modalTitle">${esc(o.title)}</h2><p style="color:var(--muted)">${esc(o.description)}</p><div class="detail-meta"><span>🏢 ${esc(o.organizer||'Организатор уточняется')}</span><span>📍 ${esc((o.region||[]).join(', '))}</span><span>🌐 ${esc(o.format||'Формат уточняется')}</span></div><div class="detail-section"><p><strong>Для кого:</strong> ${esc(o.eligibility||o.ageLabel||'Требования уточняются')}</p><p><strong>Сроки:</strong> ${esc(o.deadline||'Не указаны')}</p><p><strong>Стоимость:</strong> ${esc(o.participationCost||'Не указана')}</p><p><strong>Документы:</strong> ${esc(o.documents||'Уточнить у организатора')}</p><p><strong>Условия участия:</strong> ${esc(o.accessibility||'Уточнить у организатора')}</p><p><strong>Предметы и направления:</strong> ${esc((o.subjects||[]).join(', ')||'Не указаны')}</p></div>${caseSection}<div class="notice">Проверка карточки: ${formatDate(o.lastChecked)}. ${esc(o.verificationStatus||'Перед участием проверьте условия у организатора.')}</div>${safeUrl?`<a class="modal-source" href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Открыть страницу возможности ↗</a>`:`<span class="modal-source secondary">Прямая ссылка на набор не предоставлена</span>`}${safeSource&&safeSource!==safeUrl?`<a class="modal-source secondary" href="${esc(safeSource)}" target="_blank" rel="noopener noreferrer">Открыть публикацию-источник ↗</a>`:''}<button class="btn btn-light" style="margin:14px 8px 0 0" onclick="toggleFavorite(${Number(o.id)})">${saved?'♥ В избранном':'♡ Добавить в избранное'}</button>`;
+ $('detailsModal').hidden=false;
+ document.body.style.overflow='hidden';
+ $('closeModal').focus();
+}
+function renderDetail(){
+ const o=opportunities.find(x=>x.id===currentDetail);if(!o)return;
+ const saved=favorites.includes(o.id);
+ const caseSection=o.isCase?`<div class="detail-section"><h3>Параметры кейс-чемпионата</h3><p><strong>Тематика:</strong> ${esc(o.caseTheme)}</p><p><strong>Формат участия:</strong> ${esc(o.teamSize||'уточняется')}</p><p><strong>Этапы:</strong> ${esc(o.caseStages||'Уточняются на официальном сайте')}</p><p><strong>Финал:</strong> ${esc(o.finalFormat||'Уточняется')}</p><p><strong>Поездки и компенсация:</strong> ${esc(o.travel||'Уточняется')}</p><p><strong>Призы и поддержка:</strong> ${esc(o.prizes||'Не подтверждены')}</p></div>`:'';
+ $('detailContent').innerHTML=`<article class="detail-card"><span class="tag">${esc(o.category)}</span> <span class="status-pill">${esc(o.status)}</span><h1>${esc(o.title)}</h1><p style="color:var(--muted)">${esc(o.description)}</p><div class="detail-meta"><span>🏢 ${esc(o.organizer)}</span><span>📍 ${esc((o.region||[]).join(', '))}</span><span>🌐 ${esc(o.format)}</span></div><div class="subject-tags">${(o.subjects||[]).map(s=>`<span class="subject-tag">${esc(s)}</span>`).join('')}</div><div class="notice">Информация справочная. Дата последней проверки: ${formatDate(o.lastChecked)}. Статус набора не заменяет проверку актуального положения организатора.</div><div class="detail-section"><h3>Для кого</h3><p>${esc(o.eligibility)}</p></div><div class="detail-section"><h3>Формат и доступность</h3><p>${esc(o.accessibility)}</p></div><div class="detail-section"><h3>Сроки и статус</h3><p><strong>${esc(o.deadline)}</strong><br>${esc(o.status)}</p></div><div class="detail-section"><h3>Стоимость и поддержка</h3><p>${esc(o.participationCost)}. ${o.financialSupport?'В карточке заявлена финансовая поддержка; точные условия — у организатора.':'Финансовая поддержка в карточке не подтверждена.'}</p></div><div class="detail-section"><h3>Документы и требования</h3><p>${esc(o.documents)}</p></div>${caseSection}<div class="detail-section"><h3>Проверка информации</h3><p>${esc(o.verificationStatus)}</p><p>Последняя проверка: ${formatDate(o.lastChecked)}.</p></div><div class="detail-actions"><a class="btn btn-primary" href="${esc(o.officialUrl)}" target="_blank" rel="noopener noreferrer">Открыть официальный источник ↗</a><button class="btn btn-light" onclick="toggleFavorite(${Number(o.id)})">${saved?'♥ В избранном':'♡ Добавить в избранное'}</button><button class="btn btn-light" onclick="shareOpportunity(${Number(o.id)})">Поделиться</button><button class="btn btn-light" onclick="window.print()">Печать карточки</button></div><p class="hero-note">Страница подтверждения: <a href="${esc(o.sourceUrl)}" target="_blank" rel="noopener noreferrer">открыть источник</a></p></article>`;
+}
+function shareOpportunity(id){
+ const o=opportunities.find(x=>x.id===id);if(!o)return;const url=o.officialUrl;
+ if(navigator.share)navigator.share({title:o.title,text:'Возможность из каталога «Равный старт»',url}).catch(()=>{});
+ else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>toast('Ссылка скопирована')).catch(()=>toast(url));
+ else toast(url);
+}
+function goBack(){showPage(previousPage==='detail'?'catalog':previousPage)}
+function renderSaved(){
+ const saved=opportunities.filter(o=>favorites.includes(o.id));
+ $('savedList').innerHTML=saved.length?saved.map(o=>`<div class="mini-item"><span>${esc(o.title)}</span><button onclick="openDetail(${Number(o.id)})">Открыть</button></div>`).join():'<div class="empty"><div class="big">♡</div><h3>Пока ничего не сохранено</h3><p>Добавляй интересные программы в избранное.</p><button class="btn btn-primary" onclick="showPage(\'catalog\')">Перейти в каталог</button></div>';
+ $('deadlineList').innerHTML=saved.length?saved.map(o=>`<div class="mini-item"><span>${esc(o.title)}<br><small>${esc(o.deadline)}</small></span><button onclick="openDetail(${Number(o.id)})">Проверить</button></div>`).join():'<p class="form-help">Сохрани программу, чтобы видеть её сроки.</p>';
+ const seen=viewed.map(id=>opportunities.find(o=>o.id===id)).filter(Boolean);
+ $('viewedList').innerHTML=seen.length?seen.map(o=>`<div class="mini-item"><span>${esc(o.title)}</span><button onclick="openDetail(${Number(o.id)})">Открыть</button></div>`).join():'<p class="form-help">Здесь появятся недавно просмотренные программы.</p>';
+}
+function renderSources(){
+ const unique=[...new Map(opportunities.map(o=>[o.officialUrl,o])).values()];
+ $('sourceList').innerHTML=unique.map(o=>`<div class="mini-item"><span><strong>${esc(o.organizer)}</strong><br><small>${esc(o.title)} · проверка ${formatDate(o.lastChecked)}</small></span><a href="${esc(o.officialUrl)}" target="_blank" rel="noopener noreferrer">Открыть ↗</a></div>`).join('');
+}
+function renderUnverified(){
+ const items=[
+  ['«Маяки»','Не удалось однозначно установить конкретный кейс-чемпионат, организатора и официальное положение.'],
+  ['Кейс-чемпионаты Росатома','Найдены упоминания проектной и инженерной активности, но конкретный открытый набор с подтверждённой аудиторией и правилами для школьников/студентов не установлен.'],
+  ['Совместные инициативные программы НИУ ВШЭ и Росатома','Найден проект «Платформа соинвестирования ключевых компетенций» (ПСКК), реализуемый НИУ ВШЭ с IRP Technology во взаимодействии с Ростехом и Росатомом. Это инфраструктурный студенческий проект, а не подтверждённый открытый конкурс/набор для индивидуальных заявителей; поэтому в каталог возможностей не включён.']
+ ];
+ $('unverifiedList').innerHTML=items.map(x=>`<div class="mini-item"><span><strong>${esc(x[0])}</strong><br><small>${esc(x[1])}</small></span><span class="status-pill">Не включено</span></div>`).join('');
+}
+function exportCSV(){
+ const rows=activeResults.length?activeResults:opportunities;
+ const cols=['title','category','organizer','officialUrl','sourceUrl','region','format','ageLabel','subjects','participationCost','financialSupport','deadline','status','lastChecked','verificationStatus'];
+ const escCSV=v=>'"'+String(Array.isArray(v)?v.join('; '):v??'').replace(/"/g,'""')+'"';
+ const csv='\uFEFF'+[cols.join(';'),...rows.map(o=>cols.map(k=>escCSV(o[k])).join(';'))].join('\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='ravny-start-opportunities.csv';a.click();URL.revokeObjectURL(a.href);
+}
+$('searchForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const rawInterests=[...document.querySelectorAll('#interestChecks input:checked')].map(x=>x.value);
+ const interestMap={
+  'Образование':['Онлайн-школы и подготовка','Курсы и образовательные программы'],
+  'Олимпиады и конкурсы':['Олимпиады','Онлайн-школы и подготовка','Конкурсы и проектные программы','Кейс-чемпионаты'],
+  'Стажировки':['Стажировки и карьера'],
+  'Гранты':['Гранты и инициативные проекты'],
+  'Волонтёрство':['Волонтёрство'],
+  'Карьерные программы':['Стажировки и карьера'],
+  'Научные проекты':['Научные и технологические программы','Курсы и образовательные программы'],
+  'Творческие проекты':['Курсы и образовательные программы']
+ };
+ const p={
+  region:$('region').value==='any'?'':$('region').value,
+  age:$('age').value.trim(),
+  status:$('status').value==='any'?'':$('status').value,
+  level:$('education').value==='any'?'':$('education').value,
+  online:$('format').value==='any'?'':$('format').value,
+  interests:rawInterests.flatMap(x=>interestMap[x]||[]),
+  subject:$('subject').value.trim().toLowerCase()
+ };
+ if(!p.region&&!p.age&&!p.status&&!p.level&&!p.online&&!p.interests.length&&!p.subject){
+  toast('Выбери хотя бы один параметр для подбора.');$('matchMessage').textContent='Заполни хотя бы одно поле или выбери направление интереса — тогда подбор будет осмысленным.';return;
+ }
+ $('matchMessage').textContent='';
+ recommendations=opportunities.filter(o=>
+  (!p.region||regionMatch(o,p.region))&&
+  (!p.age||ageMatch(o,p.age))&&
+  (!p.status||educationMatch(o,p.status))&&
+  (!p.level||levelMatch(o,p.level))&&
+  (!p.online||p.online!=='online'||isOnline(o))&&
+  (!p.interests.length||p.interests.includes(o.category))&&
+  (!p.subject||(o.subjects||[]).some(s=>s.toLowerCase().includes(p.subject))||(o.title+' '+o.description).toLowerCase().includes(p.subject))
+ ).map(o=>({...o,_match:scoreFor(o,p)})).sort((a,b)=>b._match.percent-a._match.percent||b._match.score-a._match.score);
+ activeRecommendationSet=true;showPage('catalog');
+ if(!recommendations.length)toast('Совпадений нет — попробуй расширить параметры.');
+ else toast(`Подборка готова: ${recommendations.length} вариантов.`);
+});
+$('closeModal')?.addEventListener('click',()=>{$('detailsModal').hidden=true;document.body.style.overflow='';});
+$('detailsModal')?.addEventListener('click',e=>{if(e.target===$('detailsModal')){$('detailsModal').hidden=true;document.body.style.overflow='';}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('detailsModal')&&!$('detailsModal').hidden){$('detailsModal').hidden=true;document.body.style.overflow='';}});
+renderCategories();updateSavedCount();renderCatalog();renderSources();renderUnverified();
+</script>
+</body>
+</html>
